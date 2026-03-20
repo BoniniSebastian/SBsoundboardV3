@@ -1,272 +1,743 @@
-/* =========================
-   GLOBALT
-   ========================= */
 :root{
-  --pink: #ff4f9a;
-  --btn-bg: rgba(0,0,0,0.75);
-  --btn-bg-playing: rgba(20,20,20,0.9);
-  --overlay: rgba(0,0,0,0.7);
+  --bg0:#03060b;
+  --bg1:#07111a;
+  --bg2:#0b1624;
+  --glass:rgba(255,255,255,.08);
+  --glassStrong:rgba(255,255,255,.12);
+  --glassLine:rgba(255,255,255,.14);
+  --text:#f5f8ff;
+  --muted:rgba(255,255,255,.66);
+  --soft:rgba(255,255,255,.08);
+
+  --pink:#ff4f9a;
+  --pink2:#ff7fbe;
+  --cyan:#49d9ff;
+  --cyan2:#8be8ff;
+  --orange:#ff8c4a;
+  --red:#ff5c6b;
+  --green:#57f3a1;
+
+  --shadow-lg:0 30px 80px rgba(0,0,0,.38);
+  --shadow-md:0 16px 40px rgba(0,0,0,.28);
+  --blur:18px;
+  --radius-xl:28px;
+  --radius-lg:22px;
+  --radius-md:16px;
+
+  --leftCol: 420px;
+  --libraryGap: 18px;
+  --sectionMaxH: 420px;
 }
 
-*{
-  box-sizing: border-box;
-}
+*{ box-sizing:border-box; }
 
-body{
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
-  color: #fff;
-  background: #050b12;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* =========================
-   LIVE BACKGROUND
-   ========================= */
-.bgFX{
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
+html,body{
+  margin:0;
+  min-height:100%;
   background:
-    radial-gradient(circle at 20% 20%, rgba(34,211,238,0.10), transparent 30%),
-    radial-gradient(circle at 80% 30%, rgba(232,121,249,0.10), transparent 32%),
-    radial-gradient(circle at 50% 80%, rgba(255,122,0,0.08), transparent 30%),
-    linear-gradient(180deg, #07111c 0%, #04080f 55%, #02050a 100%);
+    radial-gradient(circle at 12% 10%, rgba(73,217,255,.18), transparent 24%),
+    radial-gradient(circle at 88% 12%, rgba(255,79,154,.16), transparent 24%),
+    radial-gradient(circle at 50% 90%, rgba(255,140,74,.12), transparent 24%),
+    linear-gradient(180deg, #09111b 0%, #060b12 40%, #03060b 100%);
+  color:var(--text);
+  font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow:hidden;
 }
 
-.bgBlob{
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(70px);
-  opacity: .85;
-  mix-blend-mode: screen;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+body::before{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(73,217,255,.10), transparent 18%),
+    radial-gradient(circle at 75% 20%, rgba(255,79,154,.10), transparent 18%),
+    radial-gradient(circle at 60% 75%, rgba(255,140,74,.08), transparent 20%);
+  filter:blur(60px);
+  animation:bgFloat 14s ease-in-out infinite alternate;
+  pointer-events:none;
 }
 
-.blob1{
-  width: 52vw;
-  height: 52vw;
-  min-width: 320px;
-  min-height: 320px;
-  left: -8vw;
-  top: 8vh;
-  background: radial-gradient(circle, rgba(34,211,238,0.34) 0%, rgba(34,211,238,0.10) 45%, transparent 72%);
-  animation-name: blobFloat1;
-  animation-duration: 14s;
-}
-
-.blob2{
-  width: 48vw;
-  height: 48vw;
-  min-width: 280px;
-  min-height: 280px;
-  right: -6vw;
-  top: 18vh;
-  background: radial-gradient(circle, rgba(232,121,249,0.30) 0%, rgba(232,121,249,0.08) 45%, transparent 72%);
-  animation-name: blobFloat2;
-  animation-duration: 17s;
-}
-
-.blob3{
-  width: 46vw;
-  height: 46vw;
-  min-width: 260px;
-  min-height: 260px;
-  left: 28vw;
-  bottom: -10vh;
-  background: radial-gradient(circle, rgba(255,122,0,0.20) 0%, rgba(255,122,0,0.07) 42%, transparent 72%);
-  animation-name: blobFloat3;
-  animation-duration: 19s;
-}
-
-.bgNoise{
-  position: absolute;
-  inset: 0;
-  opacity: .05;
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
   background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-  background-size: 120px 120px;
-  mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(circle at center, black 18%, transparent 85%);
+  -webkit-mask-image:radial-gradient(circle at center, black 18%, transparent 85%);
+  opacity:.22;
+  pointer-events:none;
 }
 
-@keyframes blobFloat1{
-  0%   { transform: translate3d(0,0,0) scale(1); }
-  100% { transform: translate3d(7vw, -3vh, 0) scale(1.12); }
+@keyframes bgFloat{
+  0%{ transform:translate3d(0,0,0) scale(1); }
+  100%{ transform:translate3d(2%, -1.5%, 0) scale(1.07); }
 }
 
-@keyframes blobFloat2{
-  0%   { transform: translate3d(0,0,0) scale(1); }
-  100% { transform: translate3d(-6vw, 4vh, 0) scale(1.08); }
+button{
+  font:inherit;
+  color:inherit;
+  border:none;
+  cursor:pointer;
 }
 
-@keyframes blobFloat3{
-  0%   { transform: translate3d(0,0,0) scale(1); }
-  100% { transform: translate3d(3vw, -5vh, 0) scale(1.14); }
-}
-
-/* =========================
-   ROTATE OVERLAY (INGEN TEXT)
-   ========================= */
-#rotateNotice{
-  position: fixed;
-  inset: 0;
-
-  display: none;           /* visas bara i portrait */
-  background: var(--overlay);
-
-  z-index: 9999;
-  pointer-events: none;    /* blockerar aldrig klick */
-}
-
-/* =========================
-   PLAYER CONTROLS (ROSA)
-   ========================= */
-#player-controls{
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
-
-  display: flex;
-  gap: 14px;
-
-  z-index: 10000;
-}
-
-#player-controls button{
-  width: 86px;
-  height: 86px;
-
-  display: grid;
-  place-items: center;
-
-  background: rgba(16,16,22,0.42);
-  border: 4px solid var(--pink);
-  border-radius: 22px;
-
-  color: var(--pink);
-  font-size: 34px;
-  line-height: 1;
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
+.glass{
+  position:relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.05));
+  border:1px solid var(--glassLine);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 0 0 2px rgba(255,79,154,0.20),
-    0 0 22px rgba(255,79,154,0.65),
-    0 0 50px rgba(255,79,154,0.35);
-
-  -webkit-tap-highlight-color: transparent;
+    inset 0 1px 0 rgba(255,255,255,.12),
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    var(--shadow-md);
+  backdrop-filter: blur(var(--blur)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(130%);
 }
 
-#player-controls button:active{
-  transform: translateY(1px);
+.glass::before{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+  pointer-events:none;
 }
 
-/* =========================
-   APP / LAYOUT
-   ========================= */
-#app{
-  padding-bottom: 140px; /* så listan inte hamnar under kontrollerna */
+.glassInner{
+  position:relative;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
 }
 
-.section{
-  padding: 18px 16px 10px;
-  margin-bottom: 18px;
+.appShell{
+  display:grid;
+  grid-template-columns: var(--leftCol) 1fr;
+  gap:18px;
+  height:100vh;
+  padding:18px;
 }
 
-.section-title{
-  font-size: 34px;
-  font-weight: 900;
-  margin: 10px 0 12px;
-  letter-spacing: .6px;
-  text-shadow: 0 6px 24px rgba(0,0,0,0.45);
+.controlPanel,
+.libraryPanel{
+  min-height:0;
 }
 
-.grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 14px;
+.controlPanel{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
 
-/* =========================
-   MUSIKKNAPPAR
-   ========================= */
-.btn{
-  background: rgba(10,10,16,0.48);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
+.panelTop{
+  display:grid;
+  grid-template-columns: 1fr auto;
+  gap:14px;
+}
 
-  padding: 14px;
-  min-height: 58px;
+.brandBlock{
+  border-radius:24px;
+  padding:18px 18px 16px;
+}
 
-  color: #fff;
-  font-size: 13px;
-  text-align: center;
+.brandEyebrow,
+.libraryEyebrow,
+.tinyLabel,
+.sectionMiniTitle{
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
 
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+.brandTitle,
+.libraryTitle{
+  margin-top:6px;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-.03em;
+}
 
+.brandMeta{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.resetBtn{
+  align-self:start;
+  border-radius:18px;
+  padding:14px 16px;
+  min-width:110px;
+  font-weight:700;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+
+.resetBtn:hover,
+.actionBtn:hover,
+.sectionActionBtn:hover,
+.trackLoadBtn:hover,
+.trackFavBtn:hover,
+.heroBtn:hover{
+  transform:translateY(-1px);
+}
+
+.playerCard{
+  border-radius:30px;
+  padding:18px;
+  overflow:hidden;
+}
+
+.ambientGlow{
+  position:absolute;
+  inset:auto -10% -20% -10%;
+  height:220px;
+  background:
+    radial-gradient(circle at 35% 40%, rgba(73,217,255,.22), transparent 36%),
+    radial-gradient(circle at 65% 55%, rgba(255,79,154,.20), transparent 34%);
+  filter:blur(30px);
+  pointer-events:none;
+  animation:ambientPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse{
+  0%{ transform:scale(1) translateY(0); opacity:.8; }
+  100%{ transform:scale(1.08) translateY(-6px); opacity:1; }
+}
+
+.playerHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.nowPlayingTitle{
+  margin-top:6px;
+  font-size:20px;
+  font-weight:800;
+  line-height:1.1;
+  min-height:42px;
+}
+
+.playerStatePill{
+  align-self:start;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.playerStatePill.playing{
+  color:#fff;
+  background:rgba(87,243,161,.16);
+  border-color:rgba(87,243,161,.32);
+  box-shadow:0 0 28px rgba(87,243,161,.18);
+}
+
+.playerStatePill.paused{
+  color:#fff;
+  background:rgba(255,140,74,.16);
+  border-color:rgba(255,140,74,.32);
+}
+
+.playerVisualizerWrap{
+  margin-top:18px;
+  padding:12px 14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.visualizer{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:6px;
+  height:70px;
+}
+
+.visualizer span{
+  width:9px;
+  border-radius:999px;
+  background:linear-gradient(180deg, var(--cyan2), var(--pink));
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 10px 26px rgba(0,0,0,0.24);
+    0 0 16px rgba(73,217,255,.24),
+    0 0 18px rgba(255,79,154,.16);
+  transform-origin:bottom center;
+  animation:barAmbient 1.8s ease-in-out infinite;
+  opacity:.8;
 }
 
-.btn:active{
-  transform: scale(0.98);
+.visualizer span:nth-child(1){ height:28px; animation-delay:.05s; }
+.visualizer span:nth-child(2){ height:46px; animation-delay:.18s; }
+.visualizer span:nth-child(3){ height:22px; animation-delay:.11s; }
+.visualizer span:nth-child(4){ height:54px; animation-delay:.29s; }
+.visualizer span:nth-child(5){ height:34px; animation-delay:.16s; }
+.visualizer span:nth-child(6){ height:58px; animation-delay:.34s; }
+.visualizer span:nth-child(7){ height:26px; animation-delay:.09s; }
+.visualizer span:nth-child(8){ height:49px; animation-delay:.22s; }
+.visualizer span:nth-child(9){ height:32px; animation-delay:.14s; }
+.visualizer span:nth-child(10){ height:60px; animation-delay:.37s; }
+.visualizer span:nth-child(11){ height:24px; animation-delay:.08s; }
+.visualizer span:nth-child(12){ height:44px; animation-delay:.25s; }
+
+.visualizer.ambient span{
+  animation-name:barAmbient;
+  animation-duration:2.2s;
 }
 
-/* =========================
-   PULSE GLOW – AKTIV KNAPP
-   ========================= */
-@keyframes pulseGlow {
-  0% {
-    box-shadow:
-      0 0 0 2px rgba(255,79,154,0.18),
-      0 0 16px rgba(255,79,154,0.35),
-      0 10px 26px rgba(0,0,0,0.22);
-  }
-  50% {
-    box-shadow:
-      0 0 0 2px rgba(255,79,154,0.30),
-      0 0 28px rgba(255,79,154,0.75),
-      0 10px 26px rgba(0,0,0,0.22);
-  }
-  100% {
-    box-shadow:
-      0 0 0 2px rgba(255,79,154,0.18),
-      0 0 16px rgba(255,79,154,0.35),
-      0 10px 26px rgba(0,0,0,0.22);
-  }
+.visualizer.playing span{
+  animation-name:barActive;
+  animation-duration:.95s;
 }
 
-.btn.playing{
-  background: var(--btn-bg-playing);
-  animation: pulseGlow 1.2s ease-in-out infinite;
+@keyframes barAmbient{
+  0%,100%{ transform:scaleY(.55); opacity:.55; }
+  50%{ transform:scaleY(1.08); opacity:.9; }
+}
+
+@keyframes barActive{
+  0%,100%{ transform:scaleY(.4); opacity:.8; }
+  50%{ transform:scaleY(1.3); opacity:1; }
+}
+
+.playerCircleWrap{
+  margin-top:18px;
+  display:flex;
+  justify-content:center;
+}
+
+.playerCircle{
+  width:238px;
+  aspect-ratio:1;
+  border-radius:50%;
+  padding:14px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), rgba(255,255,255,.05) 34%, rgba(255,255,255,.02) 60%),
+    linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.16);
   box-shadow:
-    inset 0 0 12px rgba(255,255,255,0.06);
+    inset 0 1px 0 rgba(255,255,255,.18),
+    0 0 0 2px rgba(255,255,255,.03),
+    0 0 42px rgba(73,217,255,.18),
+    0 0 58px rgba(255,79,154,.14),
+    var(--shadow-md);
 }
 
-/* =========================
-   ORIENTATION
-   ========================= */
-@media (orientation: portrait){
-  #rotateNotice{ display: block; }
+.playerCircleInner{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,255,255,.10), rgba(255,255,255,.03) 55%, transparent 70%),
+    rgba(7,12,20,.68);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  text-align:center;
+  padding:24px;
 }
 
-@media (orientation: landscape){
-  #rotateNotice{ display: none; }
+.circleTop{
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
 }
-#rotateNotice {
-  display: none !important;
+
+.circleTime{
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:-.04em;
+  line-height:1;
+}
+
+.circleMeta{
+  font-size:13px;
+  color:var(--muted);
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.circleIcon{
+  font-size:24px;
+  font-weight:800;
+  opacity:.95;
+}
+
+.playerActions{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+}
+
+.actionBtn{
+  border-radius:18px;
+  padding:13px 12px;
+  font-weight:800;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.dangerSoft{
+  color:#ffd3d8;
+}
+
+.goalArea{
+  border-radius:28px;
+  padding:18px;
+}
+
+.goalButtons{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.heroBtn{
+  border-radius:22px;
+  min-height:106px;
+  text-align:left;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow:var(--shadow-md);
+  transition:transform .15s ease, filter .15s ease;
+}
+
+.heroBtnTitle{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.heroBtnMeta{
+  color:rgba(255,255,255,.84);
+  font-size:13px;
+}
+
+.heroRed{
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.20), transparent 30%),
+    linear-gradient(180deg, rgba(255,99,115,.92), rgba(207,34,76,.92));
+}
+
+.heroPink{
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 30%),
+    linear-gradient(180deg, rgba(255,109,189,.95), rgba(180,34,111,.92));
+}
+
+.preloadCard{
+  margin-top:14px;
+  padding:14px;
+}
+
+.preloadHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.preloadTitle{
+  margin-top:6px;
+  font-size:18px;
+  font-weight:800;
+  line-height:1.15;
+}
+
+.preloadBadge{
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  white-space:nowrap;
+}
+
+.preloadBadge.ready{
+  color:#fff;
+  background:rgba(73,217,255,.16);
+  border-color:rgba(73,217,255,.34);
+  box-shadow:0 0 20px rgba(73,217,255,.15);
+}
+
+.preloadHint{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.spotifyCard{
+  border-radius:28px;
+  padding:18px;
+  flex:1 1 auto;
+  min-height:240px;
+  display:flex;
+  flex-direction:column;
+}
+
+.spotifyWrap{
+  margin-top:12px;
+  flex:1 1 auto;
+  min-height:0;
+}
+
+.spotifyWrap iframe{
+  width:100%;
+  height:100%;
+  min-height:280px;
+  background:#10151d;
+}
+
+.libraryPanel{
+  min-width:0;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:18px;
+}
+
+.libraryTop{
+  border-radius:26px;
+  padding:18px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.shortcutLegend{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.legendChip{
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--muted);
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.libraryGrid{
+  min-height:0;
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:18px;
+  align-content:start;
+  overflow:auto;
+  padding-right:2px;
+}
+
+.librarySection{
+  border-radius:28px;
+  padding:16px;
+  min-height:0;
+  display:grid;
+  grid-template-rows:auto auto 1fr;
+  gap:14px;
+}
+
+.sectionHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.sectionTitle{
+  font-size:30px;
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1;
+}
+
+.sectionSubtitle{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.sectionActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.sectionActionBtn{
+  border-radius:16px;
+  padding:11px 14px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.09);
+  font-size:13px;
+  font-weight:800;
+}
+
+.sectionActionBtn.primary{
+  background:linear-gradient(180deg, rgba(73,217,255,.22), rgba(73,217,255,.12));
+  border-color:rgba(73,217,255,.28);
+}
+
+.trackList{
+  min-height:0;
+  max-height:var(--sectionMaxH);
+  overflow:auto;
+  display:grid;
+  gap:10px;
+  padding-right:4px;
+}
+
+.trackCard{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:center;
+  border-radius:18px;
+  padding:12px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 10px 26px rgba(0,0,0,.18);
+}
+
+.trackCard.playing{
+  border-color:rgba(255,79,154,.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 0 0 1px rgba(255,79,154,.16),
+    0 0 28px rgba(255,79,154,.18),
+    0 10px 26px rgba(0,0,0,.18);
+}
+
+.trackMain{
+  min-width:0;
+  text-align:left;
+  background:none;
+  padding:0;
+}
+
+.trackName{
+  font-size:15px;
+  font-weight:800;
+  line-height:1.15;
+  word-break:break-word;
+}
+
+.trackMeta{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.trackActions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.trackLoadBtn,
+.trackFavBtn{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.09);
+  font-weight:900;
+  font-size:18px;
+}
+
+.trackFavBtn.active{
+  color:#ffd86b;
+  box-shadow:0 0 24px rgba(255,216,107,.18);
+  border-color:rgba(255,216,107,.28);
+}
+
+.emptyState{
+  padding:18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+::-webkit-scrollbar{
+  width:10px;
+  height:10px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.14);
+  border-radius:999px;
+  border:2px solid transparent;
+  background-clip:padding-box;
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+@media (max-width: 1360px){
+  :root{
+    --leftCol: 380px;
+    --sectionMaxH: 360px;
+  }
+
+  .libraryGrid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 1080px){
+  html,body{
+    overflow:auto;
+  }
+
+  .appShell{
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:100vh;
+  }
+
+  .controlPanel{
+    order:1;
+  }
+
+  .libraryPanel{
+    order:2;
+  }
+
+  .spotifyWrap iframe{
+    min-height:240px;
+  }
 }
