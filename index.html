@@ -3,32 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SB Soundboard</title>
+  <title>SB Soundboard V3</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="appShell">
+    <aside class="controlPanel">
+      <div class="panelTop">
+        <div class="brandBlock glass">
+          <div class="brandEyebrow">SB SOUNDBOARD</div>
+          <div class="brandTitle">Arena Controller</div>
+          <div class="brandMeta">Touch & mus först. Tangentbord som bonus.</div>
+        </div>
 
-    <div class="bgFX">
-  <div class="bgBlob blob1"></div>
-  <div class="bgBlob blob2"></div>
-  <div class="bgBlob blob3"></div>
-  <div class="bgNoise"></div>
-</div>
+        <button id="resetBtn" class="resetBtn glass" type="button" title="Nollställ preload och favoriter">
+          Nollställ
+        </button>
+      </div>
 
-  <!-- ROTERA-NOTIS -->
-  <div id="rotateNotice">
-    Vrid telefonen till liggande läge
+      <div class="playerCard glass">
+        <div class="ambientGlow"></div>
+
+        <div class="playerHeader">
+          <div>
+            <div class="tinyLabel">Aktuell låt</div>
+            <div id="nowPlayingTitle" class="nowPlayingTitle">Ingen låt vald</div>
+          </div>
+          <div id="playerStatePill" class="playerStatePill">Idle</div>
+        </div>
+
+        <div class="playerVisualizerWrap">
+          <div id="visualizer" class="visualizer ambient">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span>
+          </div>
+        </div>
+
+        <div class="playerCircleWrap">
+          <button id="centerPlayPauseBtn" class="playerCircle glass" type="button" aria-label="Play eller pausa">
+            <div class="playerCircleInner">
+              <div class="circleTop">NU SPELAS</div>
+              <div id="circleTime" class="circleTime">--:--</div>
+              <div id="circleMeta" class="circleMeta">Välj en låt</div>
+              <div id="circleIcon" class="circleIcon">▶</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="playerActions">
+          <button id="resumeBtn" class="actionBtn glass" type="button">▶ Spela</button>
+          <button id="pauseBtn" class="actionBtn glass" type="button">❚❚ Pausa</button>
+          <button id="stopBtn" class="actionBtn glass dangerSoft" type="button">■ Stop</button>
+        </div>
+      </div>
+
+      <div class="goalArea glass">
+        <div class="sectionMiniTitle">Matchsnabbisar</div>
+
+        <div class="goalButtons">
+          <button id="goalHornBtn" class="heroBtn heroRed" type="button">
+            <span class="heroBtnTitle">📣 GOAL HORN</span>
+            <span class="heroBtnMeta">Direkt tuta (G)</span>
+          </button>
+
+          <button id="goalComboBtn" class="heroBtn heroPink" type="button">
+            <span class="heroBtnTitle">🚀 GOAL COMBO</span>
+            <span class="heroBtnMeta">Tuta + preload efter delay (C)</span>
+          </button>
+        </div>
+
+        <div class="preloadCard glassInner">
+          <div class="preloadHeader">
+            <div>
+              <div class="tinyLabel">Förladdad låt</div>
+              <div id="preloadTitle" class="preloadTitle">Ingen låt laddad</div>
+            </div>
+            <div id="preloadBadge" class="preloadBadge">Tom</div>
+          </div>
+
+          <div class="preloadHint">
+            Tryck <strong>+</strong> på en låt i biblioteket för att ladda den här.
+          </div>
+        </div>
+      </div>
+
+      <div class="spotifyCard glass">
+        <div class="sectionMiniTitle">Spotify</div>
+        <div class="spotifyWrap">
+          <iframe
+            id="spotifyPlayer"
+            style="border-radius:18px"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+          </iframe>
+        </div>
+      </div>
+    </aside>
+
+    <main class="libraryPanel">
+      <div class="libraryTop glass">
+        <div>
+          <div class="libraryEyebrow">Ljudbibliotek</div>
+          <div class="libraryTitle">Spela direkt eller förladda</div>
+        </div>
+
+        <div class="shortcutLegend">
+          <span class="legendChip">G goal horn</span>
+          <span class="legendChip">C combo</span>
+          <span class="legendChip">A avbrott random</span>
+          <span class="legendChip">U utvisning random</span>
+          <span class="legendChip">S sounds random</span>
+          <span class="legendChip">M mål random</span>
+          <span class="legendChip">Space play/pause</span>
+          <span class="legendChip">Esc stop</span>
+        </div>
+      </div>
+
+      <div id="libraryGrid" class="libraryGrid"></div>
+    </main>
   </div>
-
-  <!-- PLAYER CONTROLS -->
-  <div id="player-controls">
-    <button id="playPauseBtn">▶</button>
-    <button id="stopBtn">■</button>
-    <button id="goalHornBtn">📣</button>
-  </div>
-
-  <!-- APP -->
-  <div id="app"></div>
 
   <script src="app.js"></script>
 </body>
