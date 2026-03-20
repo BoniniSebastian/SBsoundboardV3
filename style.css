@@ -110,12 +110,6 @@ body{
   0%   { transform: translate3d(0,0,0) scale(1); }
   100% { transform: translate3d(3vw, -5vh, 0) scale(1.14); }
 }
-  <div class="bgFX">
-  <div class="bgBlob blob1"></div>
-  <div class="bgBlob blob2"></div>
-  <div class="bgBlob blob3"></div>
-  <div class="bgNoise"></div>
-</div>
 
 /* =========================
    ROTATE OVERLAY (INGEN TEXT)
