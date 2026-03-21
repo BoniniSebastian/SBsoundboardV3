@@ -3,8 +3,8 @@ const REPO = "SBsoundboardV3";
 
 const GOAL_COMBO_DELAY_MS = 1200;
 const PLAY_FADE_IN_MS = 150;
-const PAUSE_FADE_OUT_MS = 340;
-const STOP_FADE_OUT_MS = 340;
+const PAUSE_FADE_OUT_MS = 700;
+const STOP_FADE_OUT_MS = 700;
 
 const STORAGE_KEYS = {
   preload: "sb_v4_preload_track",
