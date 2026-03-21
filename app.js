@@ -2,8 +2,8 @@ const OWNER = "BoniniSebastian";
 const REPO = "SBsoundboardV3";
 
 const GOAL_COMBO_DELAY_MS = 1200;
-const PLAY_FADE_IN_MS = 150;
-const PAUSE_FADE_OUT_MS = 700;
+const PLAY_FADE_IN_MS = 300;
+const PAUSE_FADE_OUT_MS = 900;
 const STOP_FADE_OUT_MS = 340;
 
 const STORAGE_KEYS = {
