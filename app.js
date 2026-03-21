@@ -7,8 +7,9 @@ const PAUSE_FADE_OUT_MS = 700;
 const STOP_FADE_OUT_MS = 340;
 
 const STORAGE_KEYS = {
-  preload: "sb_v6_preload_track",
-  favorites: "sb_v6_avbrott_favorites"
+  preload: "sb_v7_preload_track",
+  favorites: "sb_v7_avbrott_favorites",
+  cache: "sb_v7_library_cache"
 };
 
 const MAIN_CATEGORIES = [
@@ -99,11 +100,13 @@ init().catch(console.error);
 async function init() {
   restoreLocalState();
   bindControls();
-  await loadAllFolders();
+  restoreLibraryCache();
   renderAllSections();
   renderPreload();
   syncPlayerUI();
   startUiTicker();
+  await loadAllFolders();
+  renderAllSections();
 }
 
 function restoreLocalState() {
@@ -134,10 +137,36 @@ function persistFavorites() {
   } catch {}
 }
 
+function restoreLibraryCache() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.cache);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return;
+
+    for (const [key, files] of Object.entries(parsed)) {
+      if (Array.isArray(files)) {
+        state.library.set(key, files);
+      }
+    }
+  } catch {}
+}
+
+function persistLibraryCache() {
+  try {
+    const obj = {};
+    for (const [key, files] of state.library.entries()) {
+      obj[key] = files;
+    }
+    localStorage.setItem(STORAGE_KEYS.cache, JSON.stringify(obj));
+  } catch {}
+}
+
 async function loadAllFolders() {
   const all = [...MAIN_CATEGORIES, SOUNDS_CATEGORY];
   await Promise.all(all.map(cat => loadFolder(cat)));
   await loadGoalHornCache();
+  persistLibraryCache();
 }
 
 async function loadFolder(category) {
@@ -161,7 +190,14 @@ async function loadFolder(category) {
         categoryLabel: category.label
       }));
 
-    state.library.set(category.key, files);
+    if (files.length) {
+      state.library.set(category.key, files);
+      return;
+    }
+
+    if (!state.library.has(category.key)) {
+      state.library.set(category.key, []);
+    }
   } catch (err) {
     console.error(err);
     if (!state.library.has(category.key)) {
