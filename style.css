@@ -1,10 +1,6 @@
 :root{
-  --bg0:#04070b;
-  --bg1:#090d12;
-  --bg2:#10141b;
-
   --text:#f7f9ff;
-  --muted:rgba(255,255,255,.64);
+  --muted:rgba(255,255,255,.66);
 
   --cyan:#37d7ff;
   --cyan2:#89efff;
@@ -14,14 +10,14 @@
   --orange2:#ffb25a;
   --red:#ff5a55;
 
-  --panelBg:rgba(8,11,16,.82);
-  --panelBg2:rgba(10,14,20,.92);
-  --line:rgba(255,255,255,.08);
-  --lineStrong:rgba(255,255,255,.12);
+  --panelBg:rgba(4,6,10,.62);
+  --panelBg2:rgba(4,6,10,.78);
+  --line:rgba(255,255,255,.09);
+  --lineStrong:rgba(255,255,255,.14);
 
   --shadowLg:0 26px 64px rgba(0,0,0,.42);
-  --shadowMd:0 12px 28px rgba(0,0,0,.30);
-  --blur:16px;
+  --shadowMd:0 12px 28px rgba(0,0,0,.28);
+  --blur:14px;
 }
 
 *{ box-sizing:border-box; }
@@ -32,7 +28,7 @@ html,body{
   background:
     radial-gradient(circle at 15% 12%, rgba(55,215,255,.08), transparent 24%),
     radial-gradient(circle at 85% 14%, rgba(255,79,154,.07), transparent 24%),
-    radial-gradient(circle at 50% 100%, rgba(255,123,28,.08), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(255,123,28,.10), transparent 28%),
     linear-gradient(180deg, #090d12 0%, #06090e 48%, #030509 100%);
   color:var(--text);
   font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -46,7 +42,7 @@ body::before{
   background:
     radial-gradient(circle at 32% 30%, rgba(55,215,255,.05), transparent 18%),
     radial-gradient(circle at 74% 24%, rgba(255,79,154,.05), transparent 18%),
-    radial-gradient(circle at 60% 76%, rgba(255,123,28,.06), transparent 20%);
+    radial-gradient(circle at 60% 76%, rgba(255,123,28,.07), transparent 20%);
   filter:blur(60px);
   animation:bgFloat 14s ease-in-out infinite alternate;
   pointer-events:none;
@@ -69,10 +65,10 @@ body::before{
   padding:0 0 2vh;
   pointer-events:none;
   z-index:0;
-  opacity:.22;
-  filter:blur(10px);
-  mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.12) 18%, rgba(0,0,0,.92) 64%, rgba(0,0,0,1) 100%);
-  -webkit-mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.12) 18%, rgba(0,0,0,.92) 64%, rgba(0,0,0,1) 100%);
+  opacity:.26;
+  filter:blur(8px);
+  mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.10) 16%, rgba(0,0,0,.92) 62%, rgba(0,0,0,1) 100%);
+  -webkit-mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.10) 16%, rgba(0,0,0,.92) 62%, rgba(0,0,0,1) 100%);
 }
 
 .bgEq span{
@@ -82,9 +78,9 @@ body::before{
   transform-origin:bottom center;
   background:linear-gradient(180deg, #ffd28d 0%, #ff7b1c 40%, #ff4f9a 75%, #37d7ff 100%);
   box-shadow:
-    0 0 24px rgba(255,123,28,.32),
-    0 0 28px rgba(255,79,154,.22),
-    0 0 30px rgba(55,215,255,.14);
+    0 0 28px rgba(255,123,28,.34),
+    0 0 32px rgba(255,79,154,.24),
+    0 0 34px rgba(55,215,255,.16);
   animation:bgEqMove 5s ease-in-out infinite;
 }
 
@@ -150,14 +146,14 @@ button{
 .glass{
   position:relative;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)),
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.01)),
     var(--panelBg);
   border:1px solid var(--line);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
+    inset 0 1px 0 rgba(255,255,255,.03),
     var(--shadowMd);
-  backdrop-filter: blur(var(--blur)) saturate(120%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+  backdrop-filter: blur(var(--blur)) saturate(118%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(118%);
 }
 
 .glass::before{
@@ -165,18 +161,8 @@ button{
   position:absolute;
   inset:1px;
   border-radius:inherit;
-  background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0));
+  background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,0));
   pointer-events:none;
-}
-
-.glassInner{
-  position:relative;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-    rgba(7,10,14,.75);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:18px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 .appShell{
@@ -267,10 +253,6 @@ button{
   gap:10px;
 }
 
-.sectionTitleWrap{
-  min-width:0;
-}
-
 .sectionMiniTitle,
 .tinyLabel{
   font-size:10px;
@@ -306,7 +288,9 @@ button{
 
 .sectionActionBtn.primary,
 .miniActionBtn{
-  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)), rgba(10,14,20,.8);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+    rgba(7,10,14,.66);
 }
 
 .subtleBtn{
@@ -333,12 +317,12 @@ button{
   border-radius:12px;
   min-height:72px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
-    rgba(4,6,9,.92);
-  border:1px solid rgba(255,255,255,.06);
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)),
+    rgba(3,5,8,.34);
+  border:1px solid rgba(255,255,255,.08);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.03),
-    0 8px 18px rgba(0,0,0,.22);
+    inset 0 1px 0 rgba(255,255,255,.02),
+    0 8px 18px rgba(0,0,0,.18);
   transition:transform .12s ease, border-color .12s ease, box-shadow .12s ease;
   overflow:hidden;
 }
@@ -348,12 +332,12 @@ button{
 }
 
 .trackCard.playing{
-  border-color:rgba(255,79,154,.20);
+  border-color:rgba(255,79,154,.24);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.04),
+    inset 0 1px 0 rgba(255,255,255,.03),
     0 0 0 1px rgba(255,79,154,.08),
     0 0 14px rgba(255,79,154,.08),
-    0 8px 18px rgba(0,0,0,.22);
+    0 8px 18px rgba(0,0,0,.18);
 }
 
 .trackPlayBtn{
@@ -396,7 +380,7 @@ button{
   display:grid;
   place-items:center;
   background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.10);
   font-weight:900;
   font-size:14px;
   padding:0;
@@ -411,68 +395,84 @@ button{
 .bottomStage{
   min-height:0;
   display:grid;
-  grid-template-columns:minmax(0, 1fr) minmax(420px, 1.2fr);
+  grid-template-columns:minmax(0, 1fr) minmax(360px, 1.06fr);
   align-items:end;
   gap:18px;
+  margin-top:-30px;
 }
 
 .goalDock{
   align-self:end;
-  border-radius:24px;
-  padding:12px;
   display:grid;
   grid-template-columns:auto 1fr;
   gap:14px;
   align-items:center;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.01)),
-    rgba(6,9,13,.86);
 }
 
 .goalRound{
   position:relative;
-  width:132px;
+  width:126px;
   aspect-ratio:1;
   border-radius:50%;
-  background:rgba(255,255,255,.02);
-  border:1px solid rgba(255,255,255,.08);
+  background:none;
+  border:none;
   overflow:visible;
-  box-shadow:var(--shadowMd);
+  padding:0;
 }
 
 .goalRound::before{
   content:"";
   position:absolute;
-  inset:-5px;
+  inset:-4px;
   border-radius:50%;
-  z-index:0;
-  opacity:.95;
   filter:blur(12px);
+  opacity:.98;
 }
 
 .goalHornRound::before{
-  background:radial-gradient(circle, rgba(255,90,60,.55) 0%, rgba(255,60,40,.18) 45%, transparent 72%);
+  background:radial-gradient(circle, rgba(255,92,107,.72) 0%, rgba(255,92,107,.26) 42%, transparent 72%);
 }
 
 .goalComboRound::before{
-  background:radial-gradient(circle, rgba(255,140,74,.50) 0%, rgba(255,79,154,.20) 45%, transparent 72%);
+  background:radial-gradient(circle, rgba(255,140,74,.72) 0%, rgba(255,79,154,.28) 42%, transparent 72%);
 }
 
-.goalRoundInner{
-  position:absolute;
-  inset:8px;
-  border-radius:50%;
+.goalHornRound{
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,.24), rgba(255,255,255,.04) 32%, rgba(38,8,12,.96) 75%),
+    linear-gradient(180deg, rgba(255,102,118,.94), rgba(180,20,52,.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 0 0 2px rgba(255,255,255,.04),
+    0 0 28px rgba(255,92,107,.28);
+}
+
+.goalComboRound{
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,.24), rgba(255,255,255,.04) 32%, rgba(44,15,10,.96) 75%),
+    linear-gradient(180deg, rgba(255,140,74,.96), rgba(180,34,111,.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 0 0 2px rgba(255,255,255,.04),
+    0 0 28px rgba(255,140,74,.28);
+}
+
+.goalRoundTitle,
+.goalRoundMeta{
+  position:relative;
+  z-index:1;
+  display:block;
+}
+
+.goalRound{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  gap:7px;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(255,255,255,.10), rgba(255,255,255,.02) 45%, rgba(4,7,12,.96) 78%);
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-  padding:14px;
+  gap:8px;
+  color:#fff;
+  padding:20px;
 }
 
 .goalRoundTitle{
@@ -483,7 +483,7 @@ button{
 
 .goalRoundMeta{
   font-size:11px;
-  color:rgba(255,255,255,.72);
+  color:rgba(255,255,255,.82);
   line-height:1.2;
 }
 
@@ -492,7 +492,8 @@ button{
   grid-template-columns:auto 1fr;
   gap:14px;
   align-items:center;
-  padding:10px;
+  padding:10px 12px;
+  border-radius:22px;
 }
 
 .preloadInline{
@@ -542,7 +543,7 @@ button{
 
 .playerWheel{
   position:relative;
-  width:min(520px, 100%);
+  width:min(430px, 100%);
   aspect-ratio:1;
   border-radius:50%;
   background:none;
@@ -550,7 +551,7 @@ button{
   padding:0;
   justify-self:center;
   align-self:end;
-  margin-bottom:6px;
+  margin-bottom:0;
 }
 
 .playerWheelNeon{
@@ -558,63 +559,60 @@ button{
   inset:0;
   border-radius:50%;
   pointer-events:none;
-  opacity:.86;
-  background:
-    radial-gradient(circle at 50% 50%, transparent 64%, rgba(255,255,255,0) 65%),
-    conic-gradient(from 0deg,
-      rgba(255,123,28,.96),
-      rgba(255,79,154,.98),
-      rgba(55,215,255,.98),
-      rgba(255,123,28,.96)
-    );
-  filter:blur(1px);
-  -webkit-mask:
-    radial-gradient(circle, transparent 63%, #000 64%, #000 68%, transparent 69%);
-  mask:
-    radial-gradient(circle, transparent 63%, #000 64%, #000 68%, transparent 69%);
+  opacity:.94;
+  background:conic-gradient(
+    from 0deg,
+    rgba(255,123,28,1),
+    rgba(255,79,154,1),
+    rgba(55,215,255,1),
+    rgba(255,123,28,1)
+  );
+  -webkit-mask:radial-gradient(circle, transparent 64.5%, #000 66%, #000 68.8%, transparent 70.2%);
+  mask:radial-gradient(circle, transparent 64.5%, #000 66%, #000 68.8%, transparent 70.2%);
   box-shadow:
-    0 0 16px rgba(255,123,28,.20),
-    0 0 24px rgba(255,79,154,.16),
-    0 0 28px rgba(55,215,255,.14);
+    0 0 16px rgba(255,123,28,.26),
+    0 0 22px rgba(255,79,154,.20),
+    0 0 26px rgba(55,215,255,.18);
+  filter:blur(.2px);
 }
 
 .playerWheelInner{
   position:absolute;
-  inset:18px;
+  inset:15px;
   border-radius:50%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:10px;
-  padding:38px;
+  gap:8px;
+  padding:28px;
   background:
-    radial-gradient(circle at 50% 24%, rgba(255,255,255,.07), rgba(255,255,255,.015) 40%, rgba(5,8,12,.98) 72%);
+    radial-gradient(circle at 50% 24%, rgba(255,255,255,.045), rgba(255,255,255,.008) 40%, rgba(4,7,12,.88) 72%);
   border:1px solid rgba(255,255,255,.05);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.04),
-    0 16px 42px rgba(0,0,0,.34);
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 16px 42px rgba(0,0,0,.26);
 }
 
 .playerWheel.playing .playerWheelNeon{
   animation:wheelGlowPulse 2.6s ease-in-out infinite, wheelRingRotate 9s linear infinite;
 }
 .playerWheel.paused .playerWheelNeon{
-  opacity:.48;
+  opacity:.54;
 }
 
 @keyframes wheelGlowPulse{
   0%,100%{
     box-shadow:
-      0 0 16px rgba(255,123,28,.20),
-      0 0 24px rgba(255,79,154,.16),
-      0 0 28px rgba(55,215,255,.14);
+      0 0 16px rgba(255,123,28,.26),
+      0 0 22px rgba(255,79,154,.20),
+      0 0 26px rgba(55,215,255,.18);
   }
   50%{
     box-shadow:
-      0 0 26px rgba(255,123,28,.30),
-      0 0 34px rgba(255,79,154,.24),
-      0 0 38px rgba(55,215,255,.22);
+      0 0 26px rgba(255,123,28,.34),
+      0 0 34px rgba(255,79,154,.28),
+      0 0 38px rgba(55,215,255,.26);
   }
 }
 
@@ -657,10 +655,10 @@ button{
 .nowPlayingTitle{
   width:100%;
   text-align:center;
-  font-size:26px;
+  font-size:22px;
   font-weight:900;
-  line-height:1.08;
-  min-height:58px;
+  line-height:1.06;
+  min-height:46px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -669,7 +667,7 @@ button{
 
 .wheelVisualizerWrap{
   width:100%;
-  max-width:280px;
+  max-width:220px;
   display:flex;
   justify-content:center;
 }
@@ -679,7 +677,7 @@ button{
   align-items:flex-end;
   justify-content:center;
   gap:6px;
-  height:72px;
+  height:60px;
 }
 
 .visualizer span{
@@ -695,18 +693,18 @@ button{
   opacity:.82;
 }
 
-.visualizer span:nth-child(1){ height:24px; animation-delay:.05s; }
-.visualizer span:nth-child(2){ height:42px; animation-delay:.18s; }
-.visualizer span:nth-child(3){ height:20px; animation-delay:.11s; }
-.visualizer span:nth-child(4){ height:50px; animation-delay:.29s; }
-.visualizer span:nth-child(5){ height:30px; animation-delay:.16s; }
-.visualizer span:nth-child(6){ height:56px; animation-delay:.34s; }
-.visualizer span:nth-child(7){ height:24px; animation-delay:.09s; }
-.visualizer span:nth-child(8){ height:46px; animation-delay:.22s; }
-.visualizer span:nth-child(9){ height:28px; animation-delay:.14s; }
-.visualizer span:nth-child(10){ height:58px; animation-delay:.37s; }
-.visualizer span:nth-child(11){ height:22px; animation-delay:.08s; }
-.visualizer span:nth-child(12){ height:40px; animation-delay:.25s; }
+.visualizer span:nth-child(1){ height:20px; animation-delay:.05s; }
+.visualizer span:nth-child(2){ height:36px; animation-delay:.18s; }
+.visualizer span:nth-child(3){ height:18px; animation-delay:.11s; }
+.visualizer span:nth-child(4){ height:44px; animation-delay:.29s; }
+.visualizer span:nth-child(5){ height:26px; animation-delay:.16s; }
+.visualizer span:nth-child(6){ height:48px; animation-delay:.34s; }
+.visualizer span:nth-child(7){ height:20px; animation-delay:.09s; }
+.visualizer span:nth-child(8){ height:40px; animation-delay:.22s; }
+.visualizer span:nth-child(9){ height:24px; animation-delay:.14s; }
+.visualizer span:nth-child(10){ height:50px; animation-delay:.37s; }
+.visualizer span:nth-child(11){ height:18px; animation-delay:.08s; }
+.visualizer span:nth-child(12){ height:34px; animation-delay:.25s; }
 
 .visualizer.ambient span{
   animation-name:barAmbient;
@@ -729,27 +727,27 @@ button{
 }
 
 .circleTime{
-  font-size:58px;
+  font-size:48px;
   font-weight:900;
   letter-spacing:-.05em;
   line-height:1;
 }
 
 .circleMeta{
-  font-size:15px;
+  font-size:14px;
   color:var(--muted);
-  min-height:22px;
+  min-height:20px;
   text-align:center;
 }
 
 .circleIcon{
-  font-size:28px;
+  font-size:25px;
   font-weight:900;
   opacity:.96;
 }
 
 .wheelActions{
-  margin-top:10px;
+  margin-top:8px;
   display:grid;
   grid-template-columns:repeat(4, auto);
   gap:8px;
@@ -762,8 +760,8 @@ button{
   font-weight:800;
   background:
     linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
-    rgba(8,11,16,.84);
-  border:1px solid rgba(255,255,255,.07);
+    rgba(6,9,13,.60);
+  border:1px solid rgba(255,255,255,.08);
 }
 
 .dangerSoft{
