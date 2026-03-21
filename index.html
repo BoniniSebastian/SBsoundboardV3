@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SB Soundboard V7</title>
+  <title>SB Soundboard V8</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -13,104 +13,16 @@
     <span></span><span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
   </div>
 
   <div class="appShell">
-    <header class="soundsBar glass">
-      <div class="soundsBarHead">
-        <div class="soundsBarTitle">SOUNDS</div>
-        <button id="soundsRandomBtn" class="miniActionBtn" type="button">▶ Random (S)</button>
-      </div>
-      <div id="soundsList" class="soundsList">
-        <div class="emptyState">Laddar sounds...</div>
-      </div>
-    </header>
-
-    <main class="mainGrid">
-      <section class="leftColumn">
-        <section class="librarySection glass sectionCompact">
-          <div class="sectionHeader">
-            <div class="sectionTitleWrap">
-              <div class="sectionMiniTitle">utvisning</div>
-              <div class="sectionTitle">UTVISNING</div>
-            </div>
-            <div class="sectionActions">
-              <button id="utvisningRandomBtn" class="sectionActionBtn primary" type="button">▶ Random (U)</button>
-            </div>
-          </div>
-          <div id="utvisningList" class="trackList">
-            <div class="emptyState">Laddar utvisning...</div>
-          </div>
-        </section>
-
-        <section class="librarySection glass sectionCompact">
-          <div class="sectionHeader">
-            <div class="sectionTitleWrap">
-              <div class="sectionMiniTitle">mal</div>
-              <div class="sectionTitle">MÅL</div>
-            </div>
-            <div class="sectionActions">
-              <button id="malRandomBtn" class="sectionActionBtn primary" type="button">▶ Random (M)</button>
-            </div>
-          </div>
-          <div id="malList" class="trackList">
-            <div class="emptyState">Laddar mål...</div>
-          </div>
-        </section>
-      </section>
-
-      <section class="rightColumn">
-        <section class="librarySection glass sectionTall">
-          <div class="sectionHeader">
-            <div class="sectionTitleWrap">
-              <div class="sectionMiniTitle">avbrott</div>
-              <div class="sectionTitle">AVBROTT</div>
-            </div>
-            <div class="sectionActions">
-              <button id="avbrottRandomBtn" class="sectionActionBtn primary" type="button">▶ Random (A)</button>
-            </div>
-          </div>
-          <div id="avbrottList" class="trackList avbrottList">
-            <div class="emptyState">Laddar avbrott...</div>
-          </div>
-        </section>
-      </section>
-    </main>
-
-    <section class="bottomStage">
-      <div class="goalDock">
-        <button id="goalHornBtn" class="goalRound goalHornRound" type="button">
-          <span class="goalRoundTitle">GOAL HORN</span>
-          <span class="goalRoundMeta">Direkt tuta (G)</span>
-        </button>
-
-        <div class="preloadDock glass">
-          <button id="goalComboBtn" class="goalRound goalComboRound" type="button">
-            <span class="goalRoundTitle">GOAL COMBO</span>
-            <span class="goalRoundMeta">Tuta + förladdad låt (C)</span>
-          </button>
-
-          <div class="preloadInline">
-            <div class="tinyLabel">Förladdad låt</div>
-            <div id="preloadTitle" class="preloadInlineTitle">Ingen låt laddad</div>
-            <div class="preloadInlineMetaRow">
-              <div id="preloadBadge" class="preloadBadge">Tom</div>
-              <button id="clearPreloadBtn" class="miniActionBtn subtleBtn" type="button">Rensa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section class="wheelStage">
+    <aside class="leftPanel">
+      <div class="playerCard">
         <button id="centerPlayPauseBtn" class="playerWheel" type="button" aria-label="Play eller pausa">
           <div class="playerWheelNeon"></div>
           <div class="playerWheelInner">
-            <div class="wheelTopRow">
-              <div class="tinyLabel">Spelas nu</div>
-              <div id="playerStatePill" class="playerStatePill">Idle</div>
-            </div>
-
+            <div class="wheelTopLabel">SPELAS NU</div>
             <div id="nowPlayingTitle" class="nowPlayingTitle">Ingen låt vald</div>
 
             <div class="wheelVisualizerWrap">
@@ -120,22 +32,111 @@
               </div>
             </div>
 
-            <div id="circleTime" class="circleTime">--:--</div>
+            <div class="wheelTimeRow">
+              <div id="circleTime" class="circleTime">--:--</div>
+              <div id="playerStatePill" class="playerStatePill">Idle</div>
+            </div>
+
             <div id="circleMeta" class="circleMeta">Välj en låt</div>
             <div id="circleIcon" class="circleIcon">▶</div>
           </div>
         </button>
 
         <div class="wheelActions">
-          <button id="resumeBtn" class="actionBtn glass" type="button">▶ Spela</button>
-          <button id="pauseBtn" class="actionBtn glass" type="button">❚❚ Pausa</button>
-          <button id="stopBtn" class="actionBtn glass dangerSoft" type="button">■ Stop</button>
-          <button id="resetBtn" class="actionBtn glass" type="button">Nollställ</button>
+          <button id="resumeBtn" class="actionBtn" type="button">▶ Spela</button>
+          <button id="pauseBtn" class="actionBtn" type="button">❚❚ Pausa</button>
+          <button id="stopBtn" class="actionBtn dangerSoft" type="button">■ Stop</button>
+          <button id="resetBtn" class="actionBtn" type="button">Nollställ</button>
         </div>
-      </section>
-    </section>
+      </div>
 
-    <footer class="shortcutFooter glass">
+      <div class="preloadPanel">
+        <div class="preloadTitle">PRELOAD</div>
+
+        <div class="preloadButtons">
+          <button id="goalHornBtn" class="goalBtn hornBtn" type="button">
+            <span class="goalBtnLabel">GOAL HORN</span>
+            <span class="goalBtnMeta">Direkt tuta (G)</span>
+          </button>
+
+          <button id="goalComboBtn" class="goalBtn comboBtn" type="button">
+            <span class="goalBtnLabel">GOAL COMBO</span>
+            <span class="goalBtnMeta">Tuta + preload (C)</span>
+          </button>
+        </div>
+
+        <div class="preloadTrackCard">
+          <div class="preloadTrackTop">
+            <div class="preloadTrackLabel">Förladdad låt</div>
+            <button id="clearPreloadBtn" class="tinyBtn" type="button">Rensa</button>
+          </div>
+
+          <div id="preloadTitleText" class="preloadTrackName">Ingen låt laddad</div>
+
+          <div class="preloadStatusRow">
+            <div id="preloadBadge" class="preloadBadge">Tom</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="rightPanel">
+      <div class="contentGrid">
+        <section class="audioSection sectionGoal">
+          <div class="sectionHeader">
+            <div>
+              <div class="sectionMiniTitle">mal</div>
+              <div class="sectionTitle">MÅL</div>
+            </div>
+            <button id="malRandomBtn" class="sectionActionBtn" type="button">▶ Random (M)</button>
+          </div>
+          <div id="malList" class="trackList trackList4">
+            <div class="emptyState">Laddar mål...</div>
+          </div>
+        </section>
+
+        <section class="audioSection sectionPenalty">
+          <div class="sectionHeader">
+            <div>
+              <div class="sectionMiniTitle">utvisning</div>
+              <div class="sectionTitle">UTVISNING</div>
+            </div>
+            <button id="utvisningRandomBtn" class="sectionActionBtn" type="button">▶ Random (U)</button>
+          </div>
+          <div id="utvisningList" class="trackList trackList4">
+            <div class="emptyState">Laddar utvisning...</div>
+          </div>
+        </section>
+
+        <section class="audioSection sectionSounds">
+          <div class="sectionHeader">
+            <div>
+              <div class="sectionMiniTitle">tuta</div>
+              <div class="sectionTitle">SOUNDS</div>
+            </div>
+            <button id="soundsRandomBtn" class="sectionActionBtn" type="button">▶ Random (S)</button>
+          </div>
+          <div id="soundsList" class="trackList trackList4">
+            <div class="emptyState">Laddar sounds...</div>
+          </div>
+        </section>
+
+        <section class="audioSection sectionBreak">
+          <div class="sectionHeader">
+            <div>
+              <div class="sectionMiniTitle">avbrott</div>
+              <div class="sectionTitle">AVBROTT</div>
+            </div>
+            <button id="avbrottRandomBtn" class="sectionActionBtn" type="button">▶ Random (A)</button>
+          </div>
+          <div id="avbrottList" class="trackList trackList4 tallList">
+            <div class="emptyState">Laddar avbrott...</div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="shortcutFooter">
       <span class="legendChip">G goal horn</span>
       <span class="legendChip">C combo</span>
       <span class="legendChip">A avbrott random</span>
