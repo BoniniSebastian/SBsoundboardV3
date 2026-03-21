@@ -599,7 +599,7 @@ button{
 .soundsPanel{
   border-radius:28px;
   padding:16px;
-  flex:1 1 auto;
+  flex:0 0 240;
   min-height:0;
   display:grid;
   grid-template-rows:auto 1fr;
