@@ -1,14 +1,3 @@
-/* =========================
-   SB SOUNDBOARD V3
-   - Premium glass layout
-   - Goal horn separat
-   - Goal combo = horn + preload efter fast delay
-   - Musikkanal med fade in/out
-   - Favoriter för avbrott
-   - Random per kategori
-   - Spotify som separat embed
-   ========================= */
-
 const OWNER = "BoniniSebastian";
 const REPO = "SBsoundboardV3";
 
@@ -18,21 +7,11 @@ const PAUSE_FADE_OUT_MS = 340;
 const STOP_FADE_OUT_MS = 340;
 
 const STORAGE_KEYS = {
-  preload: "sb_v3_preload_track",
-  favorites: "sb_v3_avbrott_favorites"
+  preload: "sb_v4_preload_track",
+  favorites: "sb_v4_avbrott_favorites"
 };
 
 const CATEGORIES = [
-  {
-    key: "goalhorn",
-    label: "GOAL HORN",
-    folder: "sounds/goalhorn",
-    type: "effect",
-    allowRandom: false,
-    allowLoad: false,
-    allowFavorite: false,
-    shortcut: "G"
-  },
   {
     key: "mal",
     label: "MÅL",
@@ -62,26 +41,6 @@ const CATEGORIES = [
     allowLoad: true,
     allowFavorite: false,
     shortcut: "U"
-  },
-  {
-    key: "tuta",
-    label: "SOUNDS",
-    folder: "sounds/tuta",
-    type: "music",
-    allowRandom: true,
-    allowLoad: true,
-    allowFavorite: false,
-    shortcut: "S"
-  },
-  {
-    key: "random",
-    label: "RANDOM",
-    folder: "sounds/random",
-    type: "music",
-    allowRandom: true,
-    allowLoad: true,
-    allowFavorite: false,
-    shortcut: "R"
   }
 ];
 
@@ -100,9 +59,6 @@ const state = {
   uiInterval: null
 };
 
-/* =========================
-   DOM
-   ========================= */
 const libraryGrid = document.getElementById("libraryGrid");
 const nowPlayingTitle = document.getElementById("nowPlayingTitle");
 const circleTime = document.getElementById("circleTime");
@@ -110,7 +66,6 @@ const circleMeta = document.getElementById("circleMeta");
 const circleIcon = document.getElementById("circleIcon");
 const playerStatePill = document.getElementById("playerStatePill");
 const visualizer = document.getElementById("visualizer");
-
 const centerPlayPauseBtn = document.getElementById("centerPlayPauseBtn");
 const resumeBtn = document.getElementById("resumeBtn");
 const pauseBtn = document.getElementById("pauseBtn");
@@ -118,13 +73,10 @@ const stopBtn = document.getElementById("stopBtn");
 const goalHornBtn = document.getElementById("goalHornBtn");
 const goalComboBtn = document.getElementById("goalComboBtn");
 const resetBtn = document.getElementById("resetBtn");
-
 const preloadTitle = document.getElementById("preloadTitle");
 const preloadBadge = document.getElementById("preloadBadge");
+const playerCircleBtn = document.getElementById("centerPlayPauseBtn");
 
-/* =========================
-   Start
-   ========================= */
 init().catch(console.error);
 
 async function init() {
@@ -138,9 +90,6 @@ async function init() {
   startUiTicker();
 }
 
-/* =========================
-   Init helpers
-   ========================= */
 function restoreLocalState() {
   try {
     const rawPreload = localStorage.getItem(STORAGE_KEYS.preload);
@@ -203,8 +152,7 @@ function buildSkeletonSections() {
 }
 
 async function loadAllFolders() {
-  const tasks = CATEGORIES.map(cat => loadFolder(cat));
-  await Promise.all(tasks);
+  await Promise.all(CATEGORIES.map(cat => loadFolder(cat)));
 }
 
 async function loadFolder(category) {
@@ -235,9 +183,6 @@ async function loadFolder(category) {
   }
 }
 
-/* =========================
-   Render
-   ========================= */
 function renderAllSections() {
   for (const category of CATEGORIES) {
     renderSection(category);
@@ -264,15 +209,6 @@ function renderSection(category) {
     actionWrap.appendChild(randomBtn);
   }
 
-  if (category.key === "goalhorn") {
-    const hornInfo = document.createElement("button");
-    hornInfo.className = "sectionActionBtn";
-    hornInfo.type = "button";
-    hornInfo.textContent = "▶ Spela horn";
-    hornInfo.onclick = () => playGoalHorn();
-    actionWrap.appendChild(hornInfo);
-  }
-
   if (!files.length) {
     listWrap.innerHTML = `<div class="emptyState">Inga ljud hittades i ${escapeHtml(category.folder)}.</div>`;
     return;
@@ -295,20 +231,12 @@ function renderSection(category) {
     const mainBtn = document.createElement("button");
     mainBtn.type = "button";
     mainBtn.className = "trackMain";
-    mainBtn.onclick = () => {
-      if (file.categoryKey === "goalhorn") {
-        playGoalHorn();
-        return;
-      }
-      playTrack(file, { fadeIn: true });
-    };
+    mainBtn.onclick = () => playTrack(file, { fadeIn: true });
 
     const metaLabel =
-      file.categoryKey === "goalhorn"
-        ? "Horn / direkt"
-        : file.categoryKey === "avbrott"
-          ? "Pausa / spela vidare via cirkeln"
-          : "Klick = spela direkt";
+      file.categoryKey === "avbrott"
+        ? "Pausa / spela vidare via cirkeln"
+        : "Klick = spela direkt";
 
     mainBtn.innerHTML = `
       <div class="trackName">${escapeHtml(file.name)}</div>
@@ -348,14 +276,7 @@ function renderSection(category) {
     }
 
     card.appendChild(mainBtn);
-    if (actions.childElementCount) {
-      card.appendChild(actions);
-    } else {
-      const spacer = document.createElement("div");
-      spacer.style.width = "1px";
-      card.appendChild(spacer);
-    }
-
+    card.appendChild(actions);
     listWrap.appendChild(card);
   }
 }
@@ -384,9 +305,6 @@ function renderPreload() {
   preloadBadge.classList.add("ready");
 }
 
-/* =========================
-   Controls
-   ========================= */
 function bindControls() {
   centerPlayPauseBtn.onclick = () => toggleMusicPauseResume();
   resumeBtn.onclick = () => resumeMusic();
@@ -430,23 +348,30 @@ function bindControls() {
       return;
     }
 
-    if (key === "s") {
-      playRandomFromCategory("tuta");
-      return;
-    }
-
     if (key === "m") {
       playRandomFromCategory("mal");
     }
   });
 }
 
-/* =========================
-   Audio core
-   ========================= */
-function playGoalHorn() {
-  const horns = state.library.get("goalhorn") || [];
-  const track = horns[0];
+function getGoalHornTrack() {
+  const apiFolder = "sounds/goalhorn";
+  const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${apiFolder}?t=${Date.now()}`;
+  return fetch(url, { cache: "no-store" })
+    .then(res => res.ok ? res.json() : [])
+    .then(items => {
+      const files = (items || []).filter(item => item?.type === "file" && isAudio(item.name));
+      if (!files.length) return null;
+      return {
+        name: pretty(files[0].name),
+        url: files[0].download_url
+      };
+    })
+    .catch(() => null);
+}
+
+async function playGoalHorn() {
+  const track = await getGoalHornTrack();
   if (!track) {
     alert('Ingen goalhorn-fil hittades i "sounds/goalhorn".');
     return;
@@ -454,7 +379,6 @@ function playGoalHorn() {
 
   const audio = new Audio(track.url);
   audio.preload = "auto";
-
   state.hornAudios.push(audio);
 
   audio.play().catch(() => {});
@@ -464,13 +388,13 @@ function playGoalHorn() {
   };
 }
 
-function playGoalCombo() {
+async function playGoalCombo() {
   if (!state.preloadTrack) {
     playGoalHorn();
     return;
   }
 
-  playGoalHorn();
+  await playGoalHorn();
 
   clearTimeout(state.comboTimeout);
   state.comboTimeout = setTimeout(() => {
@@ -505,20 +429,12 @@ function toggleFavorite(track) {
 function playRandomFromCategory(categoryKey) {
   const tracks = state.library.get(categoryKey) || [];
   if (!tracks.length) return;
-
   const pick = tracks[Math.floor(Math.random() * tracks.length)];
-
-  if (categoryKey === "goalhorn") {
-    playGoalHorn();
-    return;
-  }
-
   playTrack(pick, { fadeIn: true });
 }
 
 function playTrack(track, options = {}) {
   const { fadeIn = true } = options;
-
   if (!track || !track.url) return;
 
   clearTimeout(state.comboTimeout);
@@ -636,9 +552,6 @@ function resetStoredState() {
   markPlayingCards();
 }
 
-/* =========================
-   Fade utils
-   ========================= */
 function cancelMusicFade() {
   if (state.musicFadeRaf) {
     cancelAnimationFrame(state.musicFadeRaf);
@@ -661,7 +574,6 @@ function fadeInAudio(audio, ms, targetVolume = 1) {
   return new Promise((resolve) => {
     const start = performance.now();
     safeSetVolume(audio, 0);
-
     audio.play().catch(() => resolve());
 
     function step(now) {
@@ -696,7 +608,6 @@ function fadePauseAudio(audio, ms, done) {
 
   const startVol = typeof audio.volume === "number" ? audio.volume : 1;
   cancelMusicFade();
-
   const start = performance.now();
 
   function step(now) {
@@ -744,7 +655,6 @@ function fadeStopAudio(audio, ms, done) {
 
   const startVol = typeof audio.volume === "number" ? audio.volume : 1;
   cancelMusicFade();
-
   const start = performance.now();
 
   function step(now) {
@@ -771,9 +681,6 @@ function fadeStopAudio(audio, ms, done) {
   state.musicFadeRaf = requestAnimationFrame(step);
 }
 
-/* =========================
-   UI sync
-   ========================= */
 function startUiTicker() {
   if (state.uiInterval) clearInterval(state.uiInterval);
   state.uiInterval = setInterval(syncPlayerUI, 200);
@@ -782,6 +689,8 @@ function startUiTicker() {
 function syncPlayerUI() {
   const audio = state.musicAudio;
   const track = state.musicTrack;
+
+  playerCircleBtn.classList.remove("playing", "paused");
 
   if (!audio || !track) {
     nowPlayingTitle.textContent = "Ingen låt vald";
@@ -810,6 +719,7 @@ function syncPlayerUI() {
     playerStatePill.classList.add("paused");
     visualizer.classList.remove("playing");
     visualizer.classList.add("ambient");
+    playerCircleBtn.classList.add("paused");
   } else {
     circleIcon.textContent = "❚❚";
     playerStatePill.textContent = "Spelar";
@@ -817,12 +727,10 @@ function syncPlayerUI() {
     playerStatePill.classList.remove("paused");
     visualizer.classList.remove("ambient");
     visualizer.classList.add("playing");
+    playerCircleBtn.classList.add("playing");
   }
 }
 
-/* =========================
-   Utils
-   ========================= */
 function isAudio(name) {
   if (!name || name === ".keep") return false;
   const ext = (name.split(".").pop() || "").toLowerCase();
