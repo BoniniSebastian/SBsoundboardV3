@@ -7,11 +7,20 @@ const PAUSE_FADE_OUT_MS = 700;
 const STOP_FADE_OUT_MS = 340;
 
 const STORAGE_KEYS = {
-  preload: "sb_v5_preload_track",
-  favorites: "sb_v5_avbrott_favorites"
+  preload: "sb_v6_preload_track",
+  favorites: "sb_v6_avbrott_favorites"
 };
 
 const MAIN_CATEGORIES = [
+  {
+    key: "utvisning",
+    label: "UTVISNING",
+    folder: "sounds/utvisning",
+    allowRandom: true,
+    allowLoad: true,
+    allowFavorite: false,
+    shortcut: "U"
+  },
   {
     key: "mal",
     label: "MÅL",
@@ -29,15 +38,6 @@ const MAIN_CATEGORIES = [
     allowLoad: true,
     allowFavorite: true,
     shortcut: "A"
-  },
-  {
-    key: "utvisning",
-    label: "UTVISNING",
-    folder: "sounds/utvisning",
-    allowRandom: true,
-    allowLoad: true,
-    allowFavorite: false,
-    shortcut: "U"
   }
 ];
 
@@ -55,7 +55,6 @@ const AUDIO_EXT = ["mp3", "m4a", "wav", "ogg", "aac"];
 
 const state = {
   library: new Map(),
-  sections: new Map(),
   preloadTrack: null,
   avbrottFavorites: new Set(),
   musicAudio: null,
@@ -67,9 +66,15 @@ const state = {
   goalHornCache: null
 };
 
-const libraryGrid = document.getElementById("libraryGrid");
+const utvisningList = document.getElementById("utvisningList");
+const malList = document.getElementById("malList");
+const avbrottList = document.getElementById("avbrottList");
 const soundsList = document.getElementById("soundsList");
+
 const soundsRandomBtn = document.getElementById("soundsRandomBtn");
+const utvisningRandomBtn = document.getElementById("utvisningRandomBtn");
+const malRandomBtn = document.getElementById("malRandomBtn");
+const avbrottRandomBtn = document.getElementById("avbrottRandomBtn");
 
 const nowPlayingTitle = document.getElementById("nowPlayingTitle");
 const circleTime = document.getElementById("circleTime");
@@ -84,19 +89,18 @@ const stopBtn = document.getElementById("stopBtn");
 const goalHornBtn = document.getElementById("goalHornBtn");
 const goalComboBtn = document.getElementById("goalComboBtn");
 const resetBtn = document.getElementById("resetBtn");
+const clearPreloadBtn = document.getElementById("clearPreloadBtn");
 const preloadTitle = document.getElementById("preloadTitle");
 const preloadBadge = document.getElementById("preloadBadge");
-const playerCircleBtn = document.getElementById("centerPlayPauseBtn");
+const playerWheelBtn = document.getElementById("centerPlayPauseBtn");
 
 init().catch(console.error);
 
 async function init() {
   restoreLocalState();
   bindControls();
-  buildSkeletonSections();
   await loadAllFolders();
   renderAllSections();
-  renderSoundsSection();
   renderPreload();
   syncPlayerUI();
   startUiTicker();
@@ -110,10 +114,7 @@ function restoreLocalState() {
 
   try {
     const rawFavs = localStorage.getItem(STORAGE_KEYS.favorites);
-    if (rawFavs) {
-      const parsed = JSON.parse(rawFavs);
-      state.avbrottFavorites = new Set(Array.isArray(parsed) ? parsed : []);
-    }
+    if (rawFavs) state.avbrottFavorites = new Set(JSON.parse(rawFavs) || []);
   } catch {}
 }
 
@@ -129,37 +130,8 @@ function persistPreload() {
 
 function persistFavorites() {
   try {
-    localStorage.setItem(
-      STORAGE_KEYS.favorites,
-      JSON.stringify(Array.from(state.avbrottFavorites))
-    );
+    localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(Array.from(state.avbrottFavorites)));
   } catch {}
-}
-
-function buildSkeletonSections() {
-  libraryGrid.innerHTML = "";
-
-  for (const cat of MAIN_CATEGORIES) {
-    const section = document.createElement("section");
-    section.className = "librarySection glass";
-    section.dataset.key = cat.key;
-
-    section.innerHTML = `
-      <div class="sectionHeader">
-        <div>
-          <div class="sectionMiniTitle">${escapeHtml(cat.folder.replace("sounds/", ""))}</div>
-          <div class="sectionTitle">${escapeHtml(cat.label)}</div>
-        </div>
-        <div class="sectionActions" data-actions="${escapeHtml(cat.key)}"></div>
-      </div>
-      <div class="trackList" data-list="${escapeHtml(cat.key)}">
-        <div class="emptyState">Laddar ${escapeHtml(cat.label.toLowerCase())}...</div>
-      </div>
-    `;
-
-    libraryGrid.appendChild(section);
-    state.sections.set(cat.key, section);
-  }
 }
 
 async function loadAllFolders() {
@@ -192,7 +164,9 @@ async function loadFolder(category) {
     state.library.set(category.key, files);
   } catch (err) {
     console.error(err);
-    state.library.set(category.key, []);
+    if (!state.library.has(category.key)) {
+      state.library.set(category.key, []);
+    }
   }
 }
 
@@ -214,142 +188,6 @@ async function loadGoalHornCache() {
   } catch {}
 }
 
-function renderAllSections() {
-  for (const category of MAIN_CATEGORIES) {
-    renderSection(category);
-  }
-  markPlayingCards();
-}
-
-function renderSection(category) {
-  const section = state.sections.get(category.key);
-  if (!section) return;
-
-  const actionWrap = section.querySelector(`[data-actions="${category.key}"]`);
-  const listWrap = section.querySelector(`[data-list="${category.key}"]`);
-  const files = [...(state.library.get(category.key) || [])];
-
-  actionWrap.innerHTML = "";
-
-  if (category.allowRandom && files.length) {
-    const randomBtn = document.createElement("button");
-    randomBtn.className = "sectionActionBtn primary";
-    randomBtn.type = "button";
-    randomBtn.textContent = `▶ Random (${category.shortcut})`;
-    randomBtn.onclick = () => playRandomFromCategory(category.key);
-    actionWrap.appendChild(randomBtn);
-  }
-
-  if (!files.length) {
-    listWrap.innerHTML = `<div class="emptyState">Inga ljud hittades i ${escapeHtml(category.folder)}.</div>`;
-    return;
-  }
-
-  let ordered = files;
-  if (category.key === "avbrott") {
-    const favs = files.filter(file => state.avbrottFavorites.has(file.id));
-    const rest = files.filter(file => !state.avbrottFavorites.has(file.id));
-    ordered = [...favs, ...rest];
-  }
-
-  listWrap.innerHTML = "";
-  for (const file of ordered) {
-    listWrap.appendChild(createTrackCard(file, category.allowLoad, category.allowFavorite));
-  }
-}
-
-function renderSoundsSection() {
-  const files = [...(state.library.get("tuta") || [])];
-  soundsList.innerHTML = "";
-
-  if (!files.length) {
-    soundsList.innerHTML = `<div class="emptyState">Inga sounds hittades.</div>`;
-    return;
-  }
-
-  for (const file of files) {
-    soundsList.appendChild(createTrackCard(file, true, false));
-  }
-
-  markPlayingCards();
-}
-
-function createTrackCard(file, allowLoad, allowFavorite) {
-  const card = document.createElement("div");
-  card.className = "trackCard";
-  if (allowFavorite) card.classList.add("has-fav");
-  card.dataset.trackId = file.id;
-
-  const playBtn = document.createElement("button");
-  playBtn.type = "button";
-  playBtn.className = "trackPlayBtn";
-  playBtn.onclick = () => playTrack(file, { fadeIn: true });
-  playBtn.innerHTML = `
-    <div class="trackName">${escapeHtml(file.name)}</div>
-  `;
-
-  const actions = document.createElement("div");
-  actions.className = "trackActions";
-
-  if (allowLoad) {
-    const loadBtn = document.createElement("button");
-    loadBtn.type = "button";
-    loadBtn.className = "trackLoadBtn";
-    loadBtn.title = "Ladda till preload";
-    loadBtn.textContent = "+";
-    loadBtn.onclick = (e) => {
-      e.stopPropagation();
-      setPreload(file);
-    };
-    actions.appendChild(loadBtn);
-  }
-
-  if (allowFavorite) {
-    const favBtn = document.createElement("button");
-    favBtn.type = "button";
-    favBtn.className = "trackFavBtn";
-    favBtn.title = "Favoritmarkera";
-    favBtn.textContent = "★";
-    if (state.avbrottFavorites.has(file.id)) {
-      favBtn.classList.add("active");
-    }
-    favBtn.onclick = (e) => {
-      e.stopPropagation();
-      toggleFavorite(file);
-    };
-    actions.appendChild(favBtn);
-  }
-
-  card.appendChild(playBtn);
-  if (actions.childElementCount) card.appendChild(actions);
-
-  return card;
-}
-
-function markPlayingCards() {
-  document.querySelectorAll(".trackCard").forEach(card => {
-    card.classList.remove("playing");
-  });
-
-  if (!state.musicTrack) return;
-
-  const all = document.querySelectorAll(`.trackCard[data-track-id="${cssEscape(state.musicTrack.id)}"]`);
-  all.forEach(el => el.classList.add("playing"));
-}
-
-function renderPreload() {
-  if (!state.preloadTrack) {
-    preloadTitle.textContent = "Ingen låt laddad";
-    preloadBadge.textContent = "Tom";
-    preloadBadge.classList.remove("ready");
-    return;
-  }
-
-  preloadTitle.textContent = state.preloadTrack.name;
-  preloadBadge.textContent = "Redo";
-  preloadBadge.classList.add("ready");
-}
-
 function bindControls() {
   centerPlayPauseBtn.onclick = () => toggleMusicPauseResume();
   resumeBtn.onclick = () => resumeMusic();
@@ -358,7 +196,12 @@ function bindControls() {
   goalHornBtn.onclick = () => playGoalHorn();
   goalComboBtn.onclick = () => playGoalCombo();
   resetBtn.onclick = () => resetStoredState();
+  clearPreloadBtn.onclick = () => clearPreload();
+
   soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
+  utvisningRandomBtn.onclick = () => playRandomFromCategory("utvisning");
+  malRandomBtn.onclick = () => playRandomFromCategory("mal");
+  avbrottRandomBtn.onclick = () => playRandomFromCategory("avbrott");
 
   document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
@@ -398,6 +241,144 @@ function bindControls() {
   });
 }
 
+function renderAllSections() {
+  renderCategoryToList("utvisning", utvisningList, { allowLoad: true, allowFavorite: false });
+  renderCategoryToList("mal", malList, { allowLoad: true, allowFavorite: false });
+  renderCategoryToList("avbrott", avbrottList, { allowLoad: true, allowFavorite: true });
+  renderCategoryToList("tuta", soundsList, { allowLoad: true, allowFavorite: false });
+  markPlayingCards();
+}
+
+function renderCategoryToList(categoryKey, listElement, options) {
+  const files = [...(state.library.get(categoryKey) || [])];
+
+  if (!files.length) {
+    listElement.innerHTML = `<div class="emptyState">Inga ljud hittades.</div>`;
+    return;
+  }
+
+  let ordered = files;
+  if (categoryKey === "avbrott") {
+    const favs = files.filter(file => state.avbrottFavorites.has(file.id));
+    const rest = files.filter(file => !state.avbrottFavorites.has(file.id));
+    ordered = [...favs, ...rest];
+  }
+
+  listElement.innerHTML = "";
+  for (const file of ordered) {
+    listElement.appendChild(createTrackCard(file, options.allowLoad, options.allowFavorite));
+  }
+}
+
+function createTrackCard(file, allowLoad, allowFavorite) {
+  const card = document.createElement("div");
+  card.className = "trackCard";
+  if (allowFavorite) card.classList.add("has-fav");
+  card.dataset.trackId = file.id;
+
+  const playBtn = document.createElement("button");
+  playBtn.type = "button";
+  playBtn.className = "trackPlayBtn";
+  playBtn.onclick = () => playTrack(file, { fadeIn: true });
+  playBtn.innerHTML = `<div class="trackName">${escapeHtml(file.name)}</div>`;
+
+  const actions = document.createElement("div");
+  actions.className = "trackActions";
+
+  if (allowLoad) {
+    const loadBtn = document.createElement("button");
+    loadBtn.type = "button";
+    loadBtn.className = "trackLoadBtn";
+    loadBtn.title = "Ladda till preload";
+    loadBtn.textContent = "+";
+    loadBtn.onclick = (e) => {
+      e.stopPropagation();
+      setPreload(file);
+    };
+    actions.appendChild(loadBtn);
+  }
+
+  if (allowFavorite) {
+    const favBtn = document.createElement("button");
+    favBtn.type = "button";
+    favBtn.className = "trackFavBtn";
+    favBtn.title = "Favoritmarkera";
+    favBtn.textContent = "★";
+    if (state.avbrottFavorites.has(file.id)) favBtn.classList.add("active");
+    favBtn.onclick = (e) => {
+      e.stopPropagation();
+      toggleFavorite(file);
+    };
+    actions.appendChild(favBtn);
+  }
+
+  card.appendChild(playBtn);
+  if (actions.childElementCount) card.appendChild(actions);
+
+  return card;
+}
+
+function markPlayingCards() {
+  document.querySelectorAll(".trackCard").forEach(card => {
+    card.classList.remove("playing");
+  });
+
+  if (!state.musicTrack) return;
+
+  const all = document.querySelectorAll(`.trackCard[data-track-id="${cssEscape(state.musicTrack.id)}"]`);
+  all.forEach(el => el.classList.add("playing"));
+}
+
+function renderPreload() {
+  if (!state.preloadTrack) {
+    preloadTitle.textContent = "Ingen låt laddad";
+    preloadBadge.textContent = "Tom";
+    preloadBadge.classList.remove("ready");
+    return;
+  }
+
+  preloadTitle.textContent = state.preloadTrack.name;
+  preloadBadge.textContent = "Redo";
+  preloadBadge.classList.add("ready");
+}
+
+function setPreload(track) {
+  state.preloadTrack = {
+    id: track.id,
+    name: track.name,
+    url: track.url,
+    folder: track.folder,
+    categoryKey: track.categoryKey,
+    categoryLabel: track.categoryLabel
+  };
+  persistPreload();
+  renderPreload();
+}
+
+function clearPreload() {
+  state.preloadTrack = null;
+  persistPreload();
+  renderPreload();
+}
+
+function toggleFavorite(track) {
+  if (state.avbrottFavorites.has(track.id)) {
+    state.avbrottFavorites.delete(track.id);
+  } else {
+    state.avbrottFavorites.add(track.id);
+  }
+  persistFavorites();
+  renderCategoryToList("avbrott", avbrottList, { allowLoad: true, allowFavorite: true });
+  markPlayingCards();
+}
+
+function playRandomFromCategory(categoryKey) {
+  const tracks = state.library.get(categoryKey) || [];
+  if (!tracks.length) return;
+  const pick = tracks[Math.floor(Math.random() * tracks.length)];
+  playTrack(pick, { fadeIn: true });
+}
+
 function playGoalHorn() {
   if (!state.goalHornCache?.url) {
     alert('Ingen goalhorn-fil hittades i "sounds/goalhorn".');
@@ -427,37 +408,6 @@ function playGoalCombo() {
   state.comboTimeout = setTimeout(() => {
     playTrack(state.preloadTrack, { fadeIn: false });
   }, GOAL_COMBO_DELAY_MS);
-}
-
-function setPreload(track) {
-  state.preloadTrack = {
-    id: track.id,
-    name: track.name,
-    url: track.url,
-    folder: track.folder,
-    categoryKey: track.categoryKey,
-    categoryLabel: track.categoryLabel
-  };
-  persistPreload();
-  renderPreload();
-}
-
-function toggleFavorite(track) {
-  if (state.avbrottFavorites.has(track.id)) {
-    state.avbrottFavorites.delete(track.id);
-  } else {
-    state.avbrottFavorites.add(track.id);
-  }
-  persistFavorites();
-  renderSection(MAIN_CATEGORIES.find(cat => cat.key === "avbrott"));
-  markPlayingCards();
-}
-
-function playRandomFromCategory(categoryKey) {
-  const tracks = state.library.get(categoryKey) || [];
-  if (!tracks.length) return;
-  const pick = tracks[Math.floor(Math.random() * tracks.length)];
-  playTrack(pick, { fadeIn: true });
 }
 
 function playTrack(track, options = {}) {
@@ -575,7 +525,7 @@ function resetStoredState() {
   persistPreload();
   persistFavorites();
   renderPreload();
-  renderSection(MAIN_CATEGORIES.find(cat => cat.key === "avbrott"));
+  renderCategoryToList("avbrott", avbrottList, { allowLoad: true, allowFavorite: true });
   markPlayingCards();
 }
 
@@ -717,7 +667,7 @@ function syncPlayerUI() {
   const audio = state.musicAudio;
   const track = state.musicTrack;
 
-  playerCircleBtn.classList.remove("playing", "paused");
+  playerWheelBtn.classList.remove("playing", "paused");
 
   if (!audio || !track) {
     nowPlayingTitle.textContent = "Ingen låt vald";
@@ -746,7 +696,7 @@ function syncPlayerUI() {
     playerStatePill.classList.add("paused");
     visualizer.classList.remove("playing");
     visualizer.classList.add("ambient");
-    playerCircleBtn.classList.add("paused");
+    playerWheelBtn.classList.add("paused");
   } else {
     circleIcon.textContent = "❚❚";
     playerStatePill.textContent = "Spelar";
@@ -754,7 +704,7 @@ function syncPlayerUI() {
     playerStatePill.classList.remove("paused");
     visualizer.classList.remove("ambient");
     visualizer.classList.add("playing");
-    playerCircleBtn.classList.add("playing");
+    playerWheelBtn.classList.add("playing");
   }
 }
 
