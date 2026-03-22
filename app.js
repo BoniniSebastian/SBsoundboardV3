@@ -233,6 +233,22 @@ function bindControls() {
   avbrottRandomBtn.onclick = () => playRandomFromCategory("avbrott");
   soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
 
+const randomMalBtn = document.getElementById("randomMalBtn");
+const randomAvbrottBtn = document.getElementById("randomAvbrottBtn");
+const randomUtvisningBtn = document.getElementById("randomUtvisningBtn");
+
+if(randomMalBtn){
+  randomMalBtn.onclick = () => playRandomFromCategory("mal");
+}
+
+if(randomAvbrottBtn){
+  randomAvbrottBtn.onclick = () => playRandomFromCategory("avbrott");
+}
+
+if(randomUtvisningBtn){
+  randomUtvisningBtn.onclick = () => playRandomFromCategory("utvisning");
+}
+
   document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
 
