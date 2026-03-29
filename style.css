@@ -835,8 +835,7 @@ button{
   position:absolute;
   top:16px;
   left:16px;
-  width:calc((100vw - var(--playerW) - 60px) / 2);
-
+  width:calc((100vw - var(--playerW) - 56px) / 2);
   background:
     linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)),
     rgba(6,10,16,.68);
