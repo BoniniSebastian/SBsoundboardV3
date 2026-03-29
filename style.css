@@ -744,12 +744,18 @@ button{
 }
 
 .trackName{
+  font-size:11px;          /* mindre text */
+  font-weight:500;
+  line-height:1.2;         /* lite mer luft */
+  letter-spacing:.01em;
+
   display:-webkit-box;
-  -webkit-line-clamp:2;
+  -webkit-line-clamp:2;    /* max 2 rader */
   -webkit-box-orient:vertical;
   overflow:hidden;
-}
 
+  overflow-wrap:anywhere;  /* snygg brytning */
+}
 .trackActions{
   position:absolute;
   top:6px;
