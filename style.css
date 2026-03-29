@@ -878,3 +878,91 @@ button{
 .musikGrid .trackCard{
   min-height:60px;
 }
+.musikPopup{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  pointer-events:none;
+}
+
+.musikPopupCard{
+  position:absolute;
+  top:16px;
+  left:420px;
+  width:calc(50vw - 32px);
+  height:calc(100vh - 88px);
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)),
+    rgba(6,10,16,.68);
+
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:24px;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.28);
+
+  backdrop-filter:blur(14px) saturate(118%);
+  -webkit-backdrop-filter:blur(14px) saturate(118%);
+
+  display:none;
+  flex-direction:column;
+  pointer-events:auto;
+  overflow:hidden;
+}
+
+.musikPopup.open .musikPopupCard{
+  display:flex;
+}
+
+.musikPopupHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.musikPopupTitle{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.musikCloseBtn{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  font-size:16px;
+  font-weight:900;
+}
+
+.musikPopupList{
+  flex:1;
+  overflow-y:auto;
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:8px;
+  align-content:start;
+  padding:14px;
+}
+
+@media (max-width: 1080px){
+  .musikPopupCard{
+    left:16px;
+    right:16px;
+    width:auto;
+    height:58vh;
+    top:auto;
+    bottom:74px;
+  }
+
+  .musikPopupList{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+}
