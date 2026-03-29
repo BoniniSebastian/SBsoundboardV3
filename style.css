@@ -827,6 +827,9 @@ button{
   gap:8px;
   margin-bottom:14px;
   align-content:start;
+  max-height:160px;
+  overflow-y:auto;
+  padding-right:4px;
 }
 
 .musikGrid .trackCard{
