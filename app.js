@@ -13,7 +13,7 @@ const STORAGE_KEYS = {
 };
 
 const MAIN_CATEGORIES = [
-  {{
+  {
   key: "mal",
   label: "MÅL",
   folder: "sounds/mal",
@@ -296,9 +296,9 @@ if(randomUtvisningBtn){
 
 function renderAllSections() {
   renderCategoryToList("mal", malList, { allowLoad: true, allowFavorite: false });
-  renderCategoryToList("utvisning", utvisningList, { allowLoad: true, allowFavorite: false });
-  renderCategoryToList("avbrott", avbrottList, { allowLoad: true, allowFavorite: true });
-  renderCategoryToList("tuta", soundsList, { allowLoad: true, allowFavorite: false });
+  renderCategoryToList("utvisning", utvisningList, { allowLoad: false, allowFavorite: false });
+  renderCategoryToList("avbrott", avbrottList, { allowLoad: false, allowFavorite: true });
+  renderCategoryToList("tuta", soundsList, { allowLoad: false, allowFavorite: false });
   markPlayingCards();
 }
 
