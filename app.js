@@ -105,6 +105,7 @@ const clearPreloadBtn = document.getElementById("clearPreloadBtn");
 const preloadTitleText = document.getElementById("preloadTitleText");
 const preloadBadge = document.getElementById("preloadBadge");
 const playerWheelBtn = document.getElementById("centerPlayPauseBtn");
+const musikOpenBtn = document.getElementById("musikOpenBtn");
 
 init().catch(console.error);
 
