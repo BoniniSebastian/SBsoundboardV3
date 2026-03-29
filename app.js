@@ -48,6 +48,16 @@ const MAIN_CATEGORIES = [
   allowLoad: false,  // ❌ ändra
   allowFavorite: false,
   shortcut: "S"
+},
+
+{
+  key: "musik",
+  label: "MUSIK",
+  folder: "sounds/musik",
+  allowRandom: false,
+  allowLoad: false,
+  allowFavorite: false,
+  shortcut: null
 }
 ];
 
