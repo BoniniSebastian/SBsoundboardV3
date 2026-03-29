@@ -14,51 +14,50 @@ const STORAGE_KEYS = {
 
 const MAIN_CATEGORIES = [
   {
-  key: "mal",
-  label: "MÅL",
-  folder: "sounds/mal",
-  allowRandom: true,
-  allowLoad: true,   // ✅ behåll
-  allowFavorite: false,
-  shortcut: "M"
-},
-{
-  key: "utvisning",
-  label: "UTVISNING",
-  folder: "sounds/utvisning",
-  allowRandom: true,
-  allowLoad: false,  // ❌ ändra
-  allowFavorite: false,
-  shortcut: "U"
-},
-{
-  key: "avbrott",
-  label: "AVBROTT",
-  folder: "sounds/avbrott",
-  allowRandom: true,
-  allowLoad: false,  // ❌ ändra
-  allowFavorite: true,
-  shortcut: "A"
-},
-{
-  key: "tuta",
-  label: "SOUNDS",
-  folder: "sounds/tuta",
-  allowRandom: true,
-  allowLoad: false,  // ❌ ändra
-  allowFavorite: false,
-  shortcut: "S"
-},
-
-{
-  key: "musik",
-  label: "MUSIK",
-  folder: "sounds/musik",
-  allowRandom: false,
-  allowLoad: false,
-  allowFavorite: false,
-  shortcut: null
-}
+    key: "mal",
+    label: "MÅL",
+    folder: "sounds/mal",
+    allowRandom: true,
+    allowLoad: true,
+    allowFavorite: false,
+    shortcut: "M"
+  },
+  {
+    key: "utvisning",
+    label: "UTVISNING",
+    folder: "sounds/utvisning",
+    allowRandom: true,
+    allowLoad: false,
+    allowFavorite: false,
+    shortcut: "U"
+  },
+  {
+    key: "avbrott",
+    label: "AVBROTT",
+    folder: "sounds/avbrott",
+    allowRandom: true,
+    allowLoad: false,
+    allowFavorite: true,
+    shortcut: "A"
+  },
+  {
+    key: "tuta",
+    label: "SOUNDS",
+    folder: "sounds/tuta",
+    allowRandom: true,
+    allowLoad: false,
+    allowFavorite: false,
+    shortcut: "S"
+  },
+  {
+    key: "musik",
+    label: "MUSIK",
+    folder: "sounds/musik",
+    allowRandom: false,
+    allowLoad: false,
+    allowFavorite: false,
+    shortcut: null
+  }
 ];
 
 const AUDIO_EXT = ["mp3", "m4a", "wav", "ogg", "aac"];
@@ -86,7 +85,6 @@ const malRandomBtn = document.getElementById("malRandomBtn");
 const utvisningRandomBtn = document.getElementById("utvisningRandomBtn");
 const avbrottRandomBtn = document.getElementById("avbrottRandomBtn");
 const soundsRandomBtn = document.getElementById("soundsRandomBtn");
-const musikList = document.getElementById("musikList");
 
 const nowPlayingTitle = document.getElementById("nowPlayingTitle");
 const circleTime = document.getElementById("circleTime");
@@ -105,6 +103,7 @@ const clearPreloadBtn = document.getElementById("clearPreloadBtn");
 const preloadTitleText = document.getElementById("preloadTitleText");
 const preloadBadge = document.getElementById("preloadBadge");
 const playerWheelBtn = document.getElementById("centerPlayPauseBtn");
+
 const musikOpenBtn = document.getElementById("musikOpenBtn");
 const musikPopup = document.getElementById("musikPopup");
 const musikCloseBtn = document.getElementById("musikCloseBtn");
@@ -233,52 +232,52 @@ async function loadGoalHornCache() {
 }
 
 function bindControls() {
-  centerPlayPauseBtn.onclick = () => toggleMusicPauseResume();
-  resumeBtn.onclick = () => resumeMusic();
-  pauseBtn.onclick = () => pauseMusic();
-  stopBtn.onclick = () => stopAll();
-  resetBtn.onclick = () => resetStoredState();
-  soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
-soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
+  if (centerPlayPauseBtn) centerPlayPauseBtn.onclick = () => toggleMusicPauseResume();
+  if (resumeBtn) resumeBtn.onclick = () => resumeMusic();
+  if (pauseBtn) pauseBtn.onclick = () => pauseMusic();
+  if (stopBtn) stopBtn.onclick = () => stopAll();
+  if (resetBtn) resetBtn.onclick = () => resetStoredState();
 
-if (musikOpenBtn) {
-  musikOpenBtn.onclick = () => {
-    musikPopup.classList.add("open");
-    musikOpenBtn.classList.add("active");
-  };
-}
+  if (goalHornBtn) goalHornBtn.onclick = () => playGoalHorn();
+  if (goalComboBtn) goalComboBtn.onclick = () => playGoalCombo();
+  if (clearPreloadBtn) clearPreloadBtn.onclick = () => clearPreload();
 
-if (musikCloseBtn) {
-  musikCloseBtn.onclick = () => {
-    musikPopup.classList.remove("open");
-    musikOpenBtn.classList.remove("active");
-  };
-}
+  if (malRandomBtn) malRandomBtn.onclick = () => playRandomFromCategory("mal");
+  if (utvisningRandomBtn) utvisningRandomBtn.onclick = () => playRandomFromCategory("utvisning");
+  if (avbrottRandomBtn) avbrottRandomBtn.onclick = () => playRandomFromCategory("avbrott");
+  if (soundsRandomBtn) soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
 
-  goalHornBtn.onclick = () => playGoalHorn();
-  goalComboBtn.onclick = () => playGoalCombo();
-  clearPreloadBtn.onclick = () => clearPreload();
+  const randomMalBtn = document.getElementById("randomMalBtn");
+  const randomAvbrottBtn = document.getElementById("randomAvbrottBtn");
+  const randomUtvisningBtn = document.getElementById("randomUtvisningBtn");
 
-  malRandomBtn.onclick = () => playRandomFromCategory("mal");
-  utvisningRandomBtn.onclick = () => playRandomFromCategory("utvisning");
-  avbrottRandomBtn.onclick = () => playRandomFromCategory("avbrott");
-  soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
+  if (randomMalBtn) {
+    randomMalBtn.onclick = () => playRandomFromCategory("mal");
+  }
 
-const randomMalBtn = document.getElementById("randomMalBtn");
-const randomAvbrottBtn = document.getElementById("randomAvbrottBtn");
-const randomUtvisningBtn = document.getElementById("randomUtvisningBtn");
+  if (randomAvbrottBtn) {
+    randomAvbrottBtn.onclick = () => playRandomFromCategory("avbrott");
+  }
 
-if(randomMalBtn){
-  randomMalBtn.onclick = () => playRandomFromCategory("mal");
-}
+  if (randomUtvisningBtn) {
+    randomUtvisningBtn.onclick = () => playRandomFromCategory("utvisning");
+  }
 
-if(randomAvbrottBtn){
-  randomAvbrottBtn.onclick = () => playRandomFromCategory("avbrott");
-}
+  if (musikOpenBtn) {
+    musikOpenBtn.onclick = () => {
+      if (!musikPopup) return;
+      musikPopup.classList.add("open");
+      musikOpenBtn.classList.add("active");
+    };
+  }
 
-if(randomUtvisningBtn){
-  randomUtvisningBtn.onclick = () => playRandomFromCategory("utvisning");
-}
+  if (musikCloseBtn) {
+    musikCloseBtn.onclick = () => {
+      if (!musikPopup) return;
+      musikPopup.classList.remove("open");
+      if (musikOpenBtn) musikOpenBtn.classList.remove("active");
+    };
+  }
 
   document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
@@ -291,6 +290,8 @@ if(randomUtvisningBtn){
 
     if (key === "escape") {
       stopAll();
+      if (musikPopup) musikPopup.classList.remove("open");
+      if (musikOpenBtn) musikOpenBtn.classList.remove("active");
       return;
     }
 
@@ -330,11 +331,13 @@ function renderAllSections() {
   renderCategoryToList("utvisning", utvisningList, { allowLoad: false, allowFavorite: false });
   renderCategoryToList("avbrott", avbrottList, { allowLoad: false, allowFavorite: true });
   renderCategoryToList("tuta", soundsList, { allowLoad: false, allowFavorite: false });
-renderCategoryToList("musik", musikPopupList, { allowLoad: false, allowFavorite: false });
+  renderCategoryToList("musik", musikPopupList, { allowLoad: false, allowFavorite: false });
   markPlayingCards();
 }
 
 function renderCategoryToList(categoryKey, listElement, options) {
+  if (!listElement) return;
+
   const files = [...(state.library.get(categoryKey) || [])];
 
   if (!files.length) {
@@ -423,6 +426,8 @@ function clearPreload() {
 }
 
 function renderPreload() {
+  if (!preloadTitleText || !preloadBadge) return;
+
   if (!state.preloadTrack) {
     preloadTitleText.textContent = "Ingen låt laddad";
     preloadBadge.textContent = "Tom";
@@ -442,7 +447,7 @@ function toggleFavorite(track) {
     state.avbrottFavorites.add(track.id);
   }
   persistFavorites();
-  renderCategoryToList("avbrott", avbrottList, { allowLoad: true, allowFavorite: true });
+  renderCategoryToList("avbrott", avbrottList, { allowLoad: false, allowFavorite: true });
   markPlayingCards();
 }
 
@@ -625,7 +630,7 @@ function resetStoredState() {
   persistPreload();
   persistFavorites();
   renderPreload();
-  renderCategoryToList("avbrott", avbrottList, { allowLoad: true, allowFavorite: true });
+  renderCategoryToList("avbrott", avbrottList, { allowLoad: false, allowFavorite: true });
   markPlayingCards();
 }
 
@@ -767,44 +772,56 @@ function syncPlayerUI() {
   const audio = state.musicAudio;
   const track = state.musicTrack;
 
-  playerWheelBtn.classList.remove("playing", "paused");
+  if (playerWheelBtn) playerWheelBtn.classList.remove("playing", "paused");
 
   if (!audio || !track) {
-    nowPlayingTitle.textContent = "Ingen låt vald";
-    circleTime.textContent = "--:--";
-    circleMeta.textContent = "Välj en låt";
-    circleIcon.textContent = "▶";
-    playerStatePill.textContent = "Idle";
-    playerStatePill.classList.remove("playing", "paused");
-    visualizer.classList.remove("playing");
-    visualizer.classList.add("ambient");
+    if (nowPlayingTitle) nowPlayingTitle.textContent = "Ingen låt vald";
+    if (circleTime) circleTime.textContent = "--:--";
+    if (circleMeta) circleMeta.textContent = "Välj en låt";
+    if (circleIcon) circleIcon.textContent = "▶";
+    if (playerStatePill) {
+      playerStatePill.textContent = "Idle";
+      playerStatePill.classList.remove("playing", "paused");
+    }
+    if (visualizer) {
+      visualizer.classList.remove("playing");
+      visualizer.classList.add("ambient");
+    }
     return;
   }
 
-  nowPlayingTitle.textContent = track.name;
-  circleMeta.textContent = track.categoryLabel;
+  if (nowPlayingTitle) nowPlayingTitle.textContent = track.name;
+  if (circleMeta) circleMeta.textContent = track.categoryLabel;
 
   const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
   const current = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
   const remaining = duration > 0 ? Math.max(0, Math.ceil(duration - current)) : 0;
-  circleTime.textContent = duration > 0 ? formatTime(remaining) : "--:--";
+  if (circleTime) circleTime.textContent = duration > 0 ? formatTime(remaining) : "--:--";
 
   if (audio.paused) {
-    circleIcon.textContent = "▶";
-    playerStatePill.textContent = "Pausad";
-    playerStatePill.classList.remove("playing");
-    playerStatePill.classList.add("paused");
-    visualizer.classList.remove("playing");
-    visualizer.classList.add("ambient");
-    playerWheelBtn.classList.add("paused");
+    if (circleIcon) circleIcon.textContent = "▶";
+    if (playerStatePill) {
+      playerStatePill.textContent = "Pausad";
+      playerStatePill.classList.remove("playing");
+      playerStatePill.classList.add("paused");
+    }
+    if (visualizer) {
+      visualizer.classList.remove("playing");
+      visualizer.classList.add("ambient");
+    }
+    if (playerWheelBtn) playerWheelBtn.classList.add("paused");
   } else {
-    circleIcon.textContent = "❚❚";
-    playerStatePill.textContent = "Spelar";
-    playerStatePill.classList.add("playing");
-    playerStatePill.classList.remove("paused");
-    visualizer.classList.remove("ambient");
-    visualizer.classList.add("playing");
-    playerWheelBtn.classList.add("playing");
+    if (circleIcon) circleIcon.textContent = "❚❚";
+    if (playerStatePill) {
+      playerStatePill.textContent = "Spelar";
+      playerStatePill.classList.add("playing");
+      playerStatePill.classList.remove("paused");
+    }
+    if (visualizer) {
+      visualizer.classList.remove("ambient");
+      visualizer.classList.add("playing");
+    }
+    if (playerWheelBtn) playerWheelBtn.classList.add("playing");
   }
 }
 
@@ -853,13 +870,14 @@ function cssEscape(str) {
   }
   return String(str).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
 }
-function updateClock(){
+
+function updateClock() {
   const el = document.getElementById("digitalClock");
-  if(!el) return;
+  if (!el) return;
 
   const now = new Date();
-  const h = String(now.getHours()).padStart(2,"0");
-  const m = String(now.getMinutes()).padStart(2,"0");
+  const h = String(now.getHours()).padStart(2, "0");
+  const m = String(now.getMinutes()).padStart(2, "0");
 
   el.textContent = `${h}:${m}`;
 }
