@@ -17,6 +17,11 @@
 
   --shadow:0 14px 34px rgba(0,0,0,.28);
   --blur:14px;
+
+  --playerW:390px;
+  --appPad:16px;
+  --appGap:14px;
+  --footerH:58px;
 }
 
 *{ box-sizing:border-box; }
@@ -133,22 +138,29 @@ button{
   z-index:1;
   height:100vh;
   display:grid;
-  grid-template-columns:390px 1fr;
+  grid-template-columns:0 1fr;
   grid-template-rows:1fr auto;
   grid-template-areas:
     "left right"
     "footer footer";
-  gap:14px;
-  padding:16px;
+  gap:var(--appGap);
+  padding:var(--appPad);
 }
 
 .leftPanel{
   grid-area:left;
+  position:fixed;
+  top:var(--appPad);
+  left:50%;
+  transform:translateX(-50%);
+  width:var(--playerW);
+  height:calc(100vh - var(--appPad) * 2 - var(--footerH));
   display:grid;
   grid-template-rows:1fr auto;
   gap:14px;
   min-height:0;
-  position:relative;
+  z-index:20;
+  pointer-events:auto;
 }
 
 .digitalClock{
@@ -156,17 +168,16 @@ button{
   top:18px;
   left:50%;
   transform:translateX(-50%);
+  z-index:25;
 
   font-size:28px;
   font-weight:900;
   letter-spacing:.08em;
-
   color:#fff;
 
   background:rgba(0,0,0,.35);
   padding:8px 16px;
   border-radius:12px;
-
   border:1px solid rgba(255,255,255,.12);
 
   backdrop-filter:blur(10px);
@@ -543,6 +554,7 @@ button{
   border-radius:18px;
   padding:12px;
 }
+
 .quickRandomRow{
   display:none;
 }
@@ -634,12 +646,12 @@ button{
   min-height:0;
   height:100%;
   display:grid;
-  grid-template-columns:minmax(0, 1fr) minmax(0, 1.08fr);
+  grid-template-columns:minmax(0, 1fr) var(--playerW) minmax(0, 1.08fr);
   grid-template-rows:repeat(3, minmax(0, 1fr));
   grid-template-areas:
-    "goal break"
-    "penalty break"
-    "sounds break";
+    "goal spacer break"
+    "penalty spacer break"
+    "sounds spacer break";
   gap:14px;
 }
 
@@ -832,52 +844,6 @@ button{
   background:transparent;
 }
 
-@media (max-width: 1320px){
-  .trackList4{
-    grid-template-columns:repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 1080px){
-  html,body{ overflow:auto; }
-
-  .appShell{
-    grid-template-columns:1fr;
-    grid-template-rows:auto auto auto;
-    grid-template-areas:
-      "left"
-      "right"
-      "footer";
-    height:auto;
-    min-height:100vh;
-  }
-
-  .contentGrid{
-    grid-template-columns:1fr;
-    grid-template-rows:auto;
-    grid-template-areas:
-      "goal"
-      "penalty"
-      "sounds"
-      "break";
-  }
-}
-
-.musikGrid{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:8px;
-  margin-bottom:14px;
-  align-content:start;
-  max-height:170px;
-  overflow-y:auto;
-  padding-right:4px;
-}
-
-.musikGrid .trackCard{
-  min-height:60px;
-}
 .musikPopup{
   position:fixed;
   inset:0;
@@ -888,8 +854,8 @@ button{
 .musikPopupCard{
   position:absolute;
   top:16px;
-  left:420px;
-  width:calc(50vw - 32px);
+  left:16px;
+  width:calc((100vw - var(--playerW) - 56px) / 2);
   height:calc(100vh - 88px);
 
   background:
@@ -952,7 +918,55 @@ button{
   padding:14px;
 }
 
+@media (max-width: 1320px){
+  .trackList4{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+
+  .musikPopupList{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 1080px){
+  html,body{ overflow:auto; }
+
+  .appShell{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+    grid-template-areas:
+      "left"
+      "right"
+      "footer";
+    height:auto;
+    min-height:100vh;
+  }
+
+  .leftPanel{
+    position:relative;
+    top:auto;
+    left:auto;
+    transform:none;
+    width:auto;
+    height:auto;
+    grid-area:left;
+    z-index:20;
+  }
+
+  .rightPanel{
+    grid-area:right;
+  }
+
+  .contentGrid{
+    grid-template-columns:1fr;
+    grid-template-rows:auto;
+    grid-template-areas:
+      "goal"
+      "penalty"
+      "sounds"
+      "break";
+  }
+
   .musikPopupCard{
     left:16px;
     right:16px;
