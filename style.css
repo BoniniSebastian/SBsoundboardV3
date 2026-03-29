@@ -624,9 +624,9 @@ button{
   height:100%;
   display:grid;
   grid-template-columns:
-    minmax(420px, 1fr)
+    calc((100% - var(--playerW) - (var(--appGap) * 2)) / 2)
     var(--playerW)
-    minmax(420px, 1fr);
+    calc((100% - var(--playerW) - (var(--appGap) * 2)) / 2);
   grid-template-rows:repeat(3, minmax(0, 1fr));
   grid-template-areas:
     "goal spacer break"
@@ -835,8 +835,7 @@ button{
   position:absolute;
   top:16px;
   left:16px;
-  width:calc((100vw - var(--playerW) - 56px) / 2);
-  height:calc(100vh - 88px);
+  width:calc((100vw - var(--playerW) - 60px) / 2);
 
   background:
     linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)),
