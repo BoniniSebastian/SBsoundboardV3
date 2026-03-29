@@ -106,6 +106,9 @@ const preloadTitleText = document.getElementById("preloadTitleText");
 const preloadBadge = document.getElementById("preloadBadge");
 const playerWheelBtn = document.getElementById("centerPlayPauseBtn");
 const musikOpenBtn = document.getElementById("musikOpenBtn");
+const musikPopup = document.getElementById("musikPopup");
+const musikCloseBtn = document.getElementById("musikCloseBtn");
+const musikPopupList = document.getElementById("musikPopupList");
 
 init().catch(console.error);
 
@@ -235,6 +238,22 @@ function bindControls() {
   pauseBtn.onclick = () => pauseMusic();
   stopBtn.onclick = () => stopAll();
   resetBtn.onclick = () => resetStoredState();
+  soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
+soundsRandomBtn.onclick = () => playRandomFromCategory("tuta");
+
+if (musikOpenBtn) {
+  musikOpenBtn.onclick = () => {
+    musikPopup.classList.add("open");
+    musikOpenBtn.classList.add("active");
+  };
+}
+
+if (musikCloseBtn) {
+  musikCloseBtn.onclick = () => {
+    musikPopup.classList.remove("open");
+    musikOpenBtn.classList.remove("active");
+  };
+}
 
   goalHornBtn.onclick = () => playGoalHorn();
   goalComboBtn.onclick = () => playGoalCombo();
@@ -311,7 +330,7 @@ function renderAllSections() {
   renderCategoryToList("utvisning", utvisningList, { allowLoad: false, allowFavorite: false });
   renderCategoryToList("avbrott", avbrottList, { allowLoad: false, allowFavorite: true });
   renderCategoryToList("tuta", soundsList, { allowLoad: false, allowFavorite: false });
-  renderCategoryToList("musik", musikList, { allowLoad: false, allowFavorite: false });
+renderCategoryToList("musik", musikPopupList, { allowLoad: false, allowFavorite: false });
   markPlayingCards();
 }
 
