@@ -219,6 +219,8 @@ button{
   background:none;
   border:none;
   padding:0;
+  justify-self:center;
+  align-self:end;
 }
 
 .playerWheelNeon{
