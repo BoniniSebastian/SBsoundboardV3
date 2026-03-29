@@ -818,7 +818,9 @@ button{
       "sounds"
       "break";
   }
-  .musikGrid{
+}
+
+.musikGrid{
   width:100%;
   display:grid;
   grid-template-columns:repeat(3, 1fr);
@@ -830,4 +832,3 @@ button{
 .musikGrid .trackCard{
   min-height:60px;
 }
-
