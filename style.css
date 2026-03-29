@@ -203,10 +203,12 @@ button{
 
 .playerCard{
   display:grid;
-  align-content:end;
-  justify-items:center;
+  grid-template-rows:auto 1fr;
+  align-content:stretch;
+  justify-items:stretch;
   padding:18px 18px 12px;
   min-height:0;
+  overflow:hidden;
 }
 
 .playerWheel{
