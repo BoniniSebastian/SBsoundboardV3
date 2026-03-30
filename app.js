@@ -345,12 +345,7 @@ function renderCategoryToList(categoryKey, listElement, options) {
     return;
   }
 
-  let ordered = files;
-  if (categoryKey === "avbrott") {
-    const favs = files.filter(file => state.avbrottFavorites.has(file.id));
-    const rest = files.filter(file => !state.avbrottFavorites.has(file.id));
-    ordered = [...favs, ...rest];
-  }
+    let ordered = files;
 
   listElement.innerHTML = "";
   for (const file of ordered) {
