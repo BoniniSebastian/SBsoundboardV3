@@ -779,8 +779,8 @@ button{
 }
 
 .trackFavBtn{
-  width:18px;
-  height:18px;
+  width:14px;
+  height:14px;
   border-radius:999px;
   display:grid;
   place-items:center;
@@ -794,8 +794,8 @@ button{
 
 .trackFavBtn::before{
   content:"";
-  width:8px;
-  height:8px;
+  width:6px;
+  height:6px;
   border-radius:999px;
   background:rgba(255,255,255,.12);
   transition:all .15s ease;
