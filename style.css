@@ -365,36 +365,37 @@ button{
   opacity:.9;
 }
 
-.visualizer span:nth-child(1){ height:18px; animation-delay:.05s; }
-.visualizer span:nth-child(2){ height:32px; animation-delay:.18s; }
-.visualizer span:nth-child(3){ height:16px; animation-delay:.11s; }
-.visualizer span:nth-child(4){ height:40px; animation-delay:.29s; }
-.visualizer span:nth-child(5){ height:24px; animation-delay:.16s; }
-.visualizer span:nth-child(6){ height:44px; animation-delay:.34s; }
-.visualizer span:nth-child(7){ height:18px; animation-delay:.09s; }
-.visualizer span:nth-child(8){ height:36px; animation-delay:.22s; }
-.visualizer span:nth-child(9){ height:22px; animation-delay:.14s; }
-.visualizer span:nth-child(10){ height:46px; animation-delay:.37s; }
-.visualizer span:nth-child(11){ height:16px; animation-delay:.08s; }
-.visualizer span:nth-child(12){ height:30px; animation-delay:.25s; }
+.visualizer span:nth-child(1){ height:10px; animation-delay:.02s; }
+.visualizer span:nth-child(2){ height:14px; animation-delay:.08s; }
+.visualizer span:nth-child(3){ height:18px; animation-delay:.14s; }
+.visualizer span:nth-child(4){ height:24px; animation-delay:.20s; }
+.visualizer span:nth-child(5){ height:30px; animation-delay:.26s; }
+.visualizer span:nth-child(6){ height:36px; animation-delay:.32s; }
+.visualizer span:nth-child(7){ height:30px; animation-delay:.38s; }
+.visualizer span:nth-child(8){ height:24px; animation-delay:.44s; }
+.visualizer span:nth-child(9){ height:18px; animation-delay:.50s; }
+.visualizer span:nth-child(10){ height:14px; animation-delay:.56s; }
+.visualizer span:nth-child(11){ height:10px; animation-delay:.62s; }
+.visualizer span:nth-child(12){ height:8px; animation-delay:.68s; }
+
+@keyframes waveAmbient{
+  0%,100%{ transform:scaleY(.45); opacity:.45; }
+  50%{ transform:scaleY(1); opacity:.95; }
+}
+
+@keyframes waveActive{
+  0%,100%{ transform:scaleY(.35); opacity:.75; }
+  50%{ transform:scaleY(1.22); opacity:1; }
+}
 
 .visualizer.ambient span{
-  animation-name:barAmbient;
-  animation-duration:2.2s;
+  animation-name:waveAmbient;
+  animation-duration:2.1s;
 }
+
 .visualizer.playing span{
-  animation-name:barActive;
-  animation-duration:.9s;
-}
-
-@keyframes barAmbient{
-  0%,100%{ transform:scaleY(.55); opacity:.5; }
-  50%{ transform:scaleY(1.02); opacity:.84; }
-}
-
-@keyframes barActive{
-  0%,100%{ transform:scaleY(.42); opacity:.82; }
-  50%{ transform:scaleY(1.25); opacity:1; }
+  animation-name:waveActive;
+  animation-duration:.85s;
 }
 
 .wheelTimeRow{
