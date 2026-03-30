@@ -346,23 +346,23 @@ button{
 
 .visualizer{
   display:flex;
-  align-items:flex-end;
+  align-items:center;
   justify-content:center;
-  gap:6px;
-  height:54px;
+  gap:3px;
+  height:44px;
 }
 
 .visualizer span{
-  width:7px;
+  width:4px;
   border-radius:999px;
   background:linear-gradient(180deg, var(--orange2), var(--pink), var(--cyan));
   box-shadow:
-    0 0 10px rgba(255,123,28,.16),
-    0 0 12px rgba(255,79,154,.12),
-    0 0 12px rgba(55,215,255,.08);
-  transform-origin:bottom center;
-  animation:barAmbient 1.8s ease-in-out infinite;
-  opacity:.82;
+    0 0 8px rgba(255,123,28,.14),
+    0 0 10px rgba(255,79,154,.10),
+    0 0 10px rgba(55,215,255,.08);
+  transform-origin:center center;
+  animation:waveAmbient 1.8s ease-in-out infinite;
+  opacity:.9;
 }
 
 .visualizer span:nth-child(1){ height:18px; animation-delay:.05s; }
